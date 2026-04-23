@@ -1,0 +1,164 @@
+---
+title: "Programming ligatures in Iosevka via OpenType"
+description: "Enable and customize Iosevka's programming ligatures using OpenType features: calt for defaults, dlig for discretionary, and language-specific sets."
+---
+
+Iosevka's monospace subfamilies ship with an extensive set of programming ligatures — multi-character sequences rendered as a single composed glyph. These ligatures are delivered through standard OpenType features, which means any editor or terminal that respects OpenType will apply them without any font modification. The three feature categories are: the default ligation set under `calt`, discretionary ligatures under `dlig`, and per-language sets under custom four-letter feature tags.
+
+<Note>
+  Ligations are only available in the monospace subfamilies (Iosevka, Iosevka Term, Iosevka Fixed, and their Slab variants). The quasi-proportional subfamilies Iosevka Aile and Iosevka Etoile do not include ligation features.
+</Note>
+
+## OpenType ligation features
+
+Iosevka exposes ligations through three OpenType features:
+
+<AccordionGroup>
+  <Accordion title="calt — Contextual alternates (default ligation set)">
+    The `calt` feature holds Iosevka's default ligation set. Most code editors enable `calt` by default, so you typically get ligatures without any extra configuration.
+
+    Not every ligation group is active even when `calt` is on — the default set is a balanced selection designed to work across many languages and contexts.
+
+    ```css
+    /* Enable the default ligation set */
+    font-feature-settings: "calt" 1;
+    ```
+  </Accordion>
+  <Accordion title="dlig — Discretionary ligatures">
+    The `dlig` feature activates additional ligatures that are intentionally excluded from the default `calt` set — typically because they are more opinionated or context-specific. Enable `dlig` alongside `calt` to get the full extended ligation set.
+
+    ```css
+    /* Enable default ligatures plus discretionary ligatures */
+    font-feature-settings: "calt" 1, "dlig" 1;
+    ```
+  </Accordion>
+  <Accordion title="Language-specific ligation sets (CLIK, JSPT, HSKL, …)">
+    Iosevka supports language-specific ligation sets tuned for particular programming languages. These sets are assigned to custom four-letter OpenType feature tags and are **off by default**.
+
+    To use a language-specific set, you must **disable `calt`** and then **enable the corresponding feature tag**. Combining `calt` with a language-specific tag is not supported and may produce unexpected results.
+
+    ```css
+    /* Example: enable the Haskell ligation set */
+    font-feature-settings: "calt" 0, "HSKL" 1;
+    ```
+  </Accordion>
+</AccordionGroup>
+
+## Enabling ligatures in your editor
+
+<Tabs>
+  <Tab title="VS Code">
+    Add the following to your `settings.json`:
+
+    ```json
+    "editor.fontLigatures": true
+    ```
+
+    For language-specific sets or to pass raw OpenType settings:
+
+    ```json
+    "editor.fontLigatures": "'calt' 1, 'dlig' 1"
+    ```
+  </Tab>
+  <Tab title="CSS (web / Webfont)">
+    Apply the feature settings to the element using Iosevka:
+
+    ```css
+    code, pre {
+      font-family: "Iosevka Web", monospace;
+      font-feature-settings: "calt" 1;
+    }
+    ```
+  </Tab>
+  <Tab title="JetBrains IDEs">
+    Go to **Settings → Editor → Font**, enable **Enable ligatures**.
+
+    For fine-grained control, some JetBrains products support `font-feature-settings` in their font configuration. Check your specific IDE's font settings panel.
+  </Tab>
+  <Tab title="Kitty terminal">
+    Kitty requires glyph name export support. When building a custom Iosevka, set `exportGlyphNames = true` in your build plan. Then in `kitty.conf`:
+
+    ```ini
+    font_features Iosevka +calt
+    ```
+  </Tab>
+</Tabs>
+
+## Language-specific ligation sets
+
+The table below lists all language-specific feature tags. Enable exactly one at a time with `calt` turned off.
+
+| Feature tag | Language |
+|-------------|----------|
+| `CLIK` | C-Like |
+| `JSPT` | JavaScript |
+| `PHPX` | PHP |
+| `JLIA` | Julia |
+| `RAKU` | Raku |
+| `MLXX` | ML |
+| `FSHP` | F# |
+| `FSTA` | F\* |
+| `HSKL` | Haskell |
+| `IDRS` | Idris |
+| `ELMX` | Elm |
+| `PURS` | PureScript |
+| `SWFT` | Swift |
+| `DFNY` | Dafny |
+| `COQX` | Coq |
+| `MTLB` | Matlab |
+| `VRLG` | Verilog |
+| `WFLM` | Wolfram Language (Mathematica) |
+| `ERLA` | Erlang |
+
+## Predefined ligation sets (for custom builds)
+
+When building Iosevka from source, you can select a predefined ligation set via `inherits` in the `[buildPlans.<name>.ligations]` section of your `private-build-plans.toml`. The available values map to the `calt` assignment in the built font:
+
+| Value | Assigned to |
+|-------|-------------|
+| `default-calt` | Default ligation set |
+| `dlig` | Discretionary ligatures |
+| `clike` | C-Like |
+| `javascript` | JavaScript |
+| `php` | PHP |
+| `julia` | Julia |
+| `raku` | Raku |
+| `ml` | ML |
+| `fsharp` | F# |
+| `fstar` | F\* |
+| `haskell` | Haskell |
+| `idris` | Idris |
+| `elm` | Elm |
+| `purescript` | PureScript |
+| `swift` | Swift |
+| `dafny` | Dafny |
+| `coq` | Coq |
+| `matlab` | Matlab |
+| `verilog` | Verilog |
+| `wolfram` | Wolfram Language (Mathematica) |
+| `erlang` | Erlang |
+
+## Cherry-picking ligation groups
+
+The `disables` and `enables` arrays in the `ligations` subsection of a custom build plan let you turn individual ligation groups on or off independent of the inherited set. This is the recommended way to include most of a predefined set while suppressing specific behaviors (such as `eqeq` or `arrow-r`).
+
+<Warning>
+  Cherry-picking ligation groups requires a custom Iosevka build. The prebuilt binaries do not expose individual group toggles as distinct OpenType features. See the [custom build documentation](https://github.com/be5invis/Iosevka/blob/main/doc/custom-build.md) for full instructions.
+</Warning>
+
+Some commonly used cherry-pick group names:
+
+- `arrow-l` / `arrow-r` / `arrow-lr` — directional arrows
+- `eqeq` — ligation for `==` and `===`
+- `lteq` / `gteq` — `<=` / `>=` as comparison signs
+- `exeq` — `!=` and `!==`
+- `llgg` — `<<`, `>>` angle-bracket chaining
+- `trig` — `<|`, `|>` and bar-and-angle-bracket symbols
+- `kern-dotty` — closer spacing for `::`, `:::`, `...`
+- `kern-bars` — closer spacing for `||`, `///`
+- `html-comment` — ligation for `<!--` and `<!---`
+- `markdown-checkboxes` — ligation for `- [ ]` and `- [x]`
+
+<Warning>
+  Some software limits the number of OpenType features it passes to the renderer. If you specify a long `font-feature-settings` list, certain features may be silently dropped. Validate your configuration against your specific editor or browser.
+</Warning>

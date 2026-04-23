@@ -1,0 +1,167 @@
+---
+title: "Installing Iosevka on Windows, macOS, and Linux"
+description: "Install Iosevka from GitHub Releases or via native package managers on Windows, macOS, major Linux distributions, FreeBSD, and OpenBSD."
+---
+
+Iosevka can be installed in two ways: by downloading a package directly from GitHub Releases, or through a package manager available on your operating system. Manual installation gives you the most control over which variant and format you install; package managers offer a faster path to a standard configuration.
+
+<Tabs>
+  <Tab title="Windows">
+    ## Manual install from GitHub Releases
+
+    <Steps>
+      <Step title="Download the package">
+        Go to the [Iosevka releases page](https://github.com/be5invis/Iosevka/releases) and download the font package for your preferred variant.
+      </Step>
+      <Step title="Quit open applications">
+        Close any editors or programs that use fonts before installing.
+      </Step>
+      <Step title="Unarchive the package">
+        Extract the ZIP archive to reveal the font files (`.ttc` or `.ttf`).
+      </Step>
+      <Step title="Install the fonts">
+        Select all font files, then drag them into the font [Settings page](ms-settings:fonts) or the Fonts control panel.
+      </Step>
+    </Steps>
+
+    <Note>
+      On Windows 10 1809 and newer, the default font installation mode is per-user. This can cause compatibility issues with applications written in Java (such as IntelliJ IDEA and other JetBrains tools). To avoid this, right-click the font files and select **Install for all users** instead. See the [JetBrains issue tracker](https://youtrack.jetbrains.com/issue/JRE-1166?p=IDEA-200145) for details.
+    </Note>
+  </Tab>
+
+  <Tab title="macOS">
+    <AccordionGroup>
+      <Accordion title="Install via Homebrew" defaultOpen={true}>
+        The standard Iosevka cask installs the default variant:
+
+        ```bash
+        brew install --cask font-iosevka
+        ```
+
+        To find other Iosevka variants available in Homebrew:
+
+        ```bash
+        brew search font-iosevka
+        ```
+
+        For a customizable install, see [robertgzr/homebrew-tap](https://github.com/robertgzr/homebrew-tap).
+      </Accordion>
+      <Accordion title="Install manually from GitHub Releases">
+        <Steps>
+          <Step title="Download the package">
+            Go to the [Iosevka releases page](https://github.com/be5invis/Iosevka/releases) and download your preferred package.
+          </Step>
+          <Step title="Quit open applications">
+            Close any editors or programs that use fonts before installing.
+          </Step>
+          <Step title="Unarchive the package">
+            Extract the ZIP archive to see the font files.
+          </Step>
+          <Step title="Install the fonts">
+            Follow [Apple's instructions for installing fonts](http://support.apple.com/kb/HT2509) using Font Book or by dropping files into `/Library/Fonts`.
+          </Step>
+        </Steps>
+      </Accordion>
+    </AccordionGroup>
+  </Tab>
+
+  <Tab title="Linux">
+    ## Install via package manager
+
+    <AccordionGroup>
+      <Accordion title="Arch Linux">
+        Install one of the available TTC packages from the official repositories:
+
+        ```bash
+        # Search for available packages
+        pacman -Ss ttc-iosevka
+        ```
+
+        Browse the full list at [archlinux.org/packages/?q=ttc-iosevka](https://archlinux.org/packages/?q=ttc-iosevka).
+      </Accordion>
+      <Accordion title="Ubuntu">
+        Install one of the Iosevka packages from the community repository:
+
+        ```bash
+        # Search for available packages
+        apt search fonts-iosevka
+        ```
+
+        See [aiei.ch/deb/fonts-iosevka](https://aiei.ch/deb/fonts-iosevka/) for the full package list.
+      </Accordion>
+      <Accordion title="Void Linux">
+        ```bash
+        xbps-install font-iosevka
+        ```
+      </Accordion>
+      <Accordion title="Fedora">
+        Install from the community COPR repository:
+
+        ```bash
+        # Enable the COPR repository first, then search and install
+        dnf search iosevka
+        ```
+
+        Enable the repository at [copr.fedorainfracloud.org/coprs/peterwu/iosevka](https://copr.fedorainfracloud.org/coprs/peterwu/iosevka/) before running the search.
+      </Accordion>
+    </AccordionGroup>
+
+    ## Manual install from GitHub Releases
+
+    For the latest release or specific variants not packaged by your distribution:
+
+    <Steps>
+      <Step title="Download TTC packages">
+        Use the following command to download all TTC packages from the latest release at once:
+
+        ```bash
+        curl -s 'https://api.github.com/repos/be5invis/Iosevka/releases/latest' \
+          | jq -r ".assets[] | .browser_download_url" \
+          | grep PkgTTC-Iosevka \
+          | xargs -n 1 curl -L -O --fail --silent --show-error
+        ```
+
+        Or download individual packages from the [releases page](https://github.com/be5invis/Iosevka/releases).
+      </Step>
+      <Step title="Unarchive the package">
+        Extract the ZIP archive to reveal the font files.
+      </Step>
+      <Step title="Copy fonts and refresh the cache">
+        Copy the font files to your user or system fonts directory, then refresh the font cache:
+
+        ```bash
+        # Copy to user fonts directory
+        mkdir -p ~/.local/share/fonts
+        cp *.ttc ~/.local/share/fonts/
+
+        # Refresh font cache
+        sudo fc-cache
+        ```
+      </Step>
+    </Steps>
+  </Tab>
+
+  <Tab title="FreeBSD">
+    ```bash
+    pkg install iosevka
+    ```
+  </Tab>
+
+  <Tab title="OpenBSD">
+    First, list the available Iosevka packages:
+
+    ```bash
+    pkg_info -Q iosevka
+    ```
+
+    Then install the package of your choice:
+
+    ```bash
+    pkg_add <package-name>
+    ```
+  </Tab>
+</Tabs>
+
+<Note>
+  Package manager distributions are maintained by the community and may not always be up-to-date with the latest Iosevka release. For the newest version, always download directly from [GitHub Releases](https://github.com/be5invis/Iosevka/releases).
+</Note>

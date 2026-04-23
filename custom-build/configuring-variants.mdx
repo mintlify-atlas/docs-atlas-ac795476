@@ -1,0 +1,143 @@
+---
+title: 'Configuring Glyph Variants in Custom Iosevka Builds'
+description: 'Use the variants subsection to inherit an ss## preset, assign per-character glyph shapes, and override letterforms for each slope in a custom Iosevka build.'
+---
+
+The `variants` subsection controls which glyph shape is used for each character in your custom font. You can start from a named stylistic preset and then override individual characters, or build a configuration from scratch. Variants can also differ across slopes — this is how Iosevka achieves its distinctive cursive italic forms.
+
+## Subsection structure
+
+All variant configuration lives under `[buildPlans.<PlanName>.variants]`. The subsection contains a top-level `inherits` key and up to four nested dictionaries:
+
+```toml
+# Optional: inherit an ss## preset as the starting point
+[buildPlans.IosevkaCustom.variants]
+inherits = "ss01"
+
+# Optional: character overrides applied to all slopes
+[buildPlans.IosevkaCustom.variants.design]
+g = 'single-storey-serifless'
+
+# Optional: overrides for upright (and oblique) only — takes priority over [design]
+[buildPlans.IosevkaCustom.variants.upright]
+i = 'zshaped'
+l = 'zshaped'
+
+# Optional: overrides for italic only — takes priority over [design]
+[buildPlans.IosevkaCustom.variants.italic]
+i = 'tailed-serifed'
+l = 'tailed-serifed'
+```
+
+## inherits
+
+**Type:** string — optional
+
+Inherits a complete stylistic set as the base for your variant choices. Any keys you set in `design`, `upright`, `italic`, or `oblique` override the inherited set on a per-character basis.
+
+<AccordionGroup>
+  <Accordion title="ss01–ss20: named stylistic presets">
+    | Value | Inspired by |
+    |-------|-------------|
+    | `ss01` | Andale Mono |
+    | `ss02` | Anonymous Pro |
+    | `ss03` | Consolas |
+    | `ss04` | Menlo |
+    | `ss05` | Fira Mono |
+    | `ss06` | Liberation Mono |
+    | `ss07` | Monaco |
+    | `ss08` | Pragmata Pro |
+    | `ss09` | Source Code Pro |
+    | `ss10` | Envy Code R |
+    | `ss11` | X Window |
+    | `ss12` | Ubuntu Mono |
+    | `ss13` | Lucida |
+    | `ss14` | JetBrains Mono |
+    | `ss15` | IBM Plex Mono |
+    | `ss16` | PT Mono |
+    | `ss17` | Recursive Mono |
+    | `ss18` | Input Mono |
+    | `ss20` | Curly |
+
+    ```toml
+    [buildPlans.IosevkaCustom.variants]
+    inherits = "ss14"
+    ```
+  </Accordion>
+  <Accordion title="buildPlans.<PlanName>: inherit another plan">
+    You can inherit the variant configuration from another plan defined in the same `private-build-plans.toml` file:
+
+    ```toml
+    [buildPlans.IosevkaCustom.variants]
+    inherits = "buildPlans.IosevkaBase"
+    ```
+
+    This is useful when you maintain a base plan and want derivative plans to share most of its settings.
+  </Accordion>
+</AccordionGroup>
+
+## design, upright, italic, and oblique dictionaries
+
+**Type:** dictionary — optional
+
+These four dictionaries assign a variant name to a character key. Rules for how they interact:
+
+- `design` applies to **all slopes**.
+- `upright`, `italic`, and `oblique` apply to their respective slopes only and **override** any `design` assignment for the same character.
+
+You can use either the human-readable variant name or the equivalent `cv##` tag number:
+
+```toml
+[buildPlans.IosevkaCustom.variants.design]
+# Named variant
+zero = 'slashed'
+
+# Equivalent using the cv## tag number (cv10 = 2 means "slashed")
+cv10 = 2
+```
+
+### Digit form
+
+The `digit-form` key controls whether numerals use lining (the default) or old-style proportions. It works in all four slope dictionaries:
+
+```toml
+[buildPlans.IosevkaCustom.variants.design]
+digit-form = 'old-style'
+```
+
+| Value | Description |
+|-------|-------------|
+| `lining` | Digits sit on the baseline at cap height (default) |
+| `old-style` | Digits have ascenders and descenders like lowercase letters |
+
+## Full example from the sample file
+
+This example inherits the Andale Mono style (`ss01`), then overrides a few characters per slope:
+
+```toml
+# Optional; Whether to inherit a ss## variant
+[buildPlans.IosevkaCustom.variants]
+inherits = "ss01"
+
+# Optional; Configure single character's variant
+[buildPlans.IosevkaCustom.variants.design]
+g = 'single-storey-serifless'
+
+# Optional; Configure single character's variant for Upright and Oblique; Overrides [design]
+[buildPlans.IosevkaCustom.variants.upright]
+i = 'zshaped'
+l = 'zshaped'
+
+# Optional; Configure single character's variant for Italic only; Overrides [design]
+[buildPlans.IosevkaCustom.variants.italic]
+i = 'tailed-serifed'
+l = 'tailed-serifed'
+```
+
+<Tip>
+  The [Iosevka Customizer](https://be5invis.github.io/Iosevka/customizer) shows every character's available variants with glyph previews and generates the correct TOML keys. Use it to explore options before editing your build plan manually.
+</Tip>
+
+<Note>
+  The complete list of character keys and their valid variant names spans digits, Latin letters, Greek letters, punctuation, and more. The upstream [custom-build.md](https://github.com/be5invis/Iosevka/blob/main/doc/custom-build.md) contains the full reference table.
+</Note>

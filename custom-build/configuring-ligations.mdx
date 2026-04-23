@@ -1,0 +1,225 @@
+---
+title: 'Configuring Ligations in Custom Iosevka Builds'
+description: 'Configure the calt ligation set by inheriting a language preset, cherry-picking individual ligation groups, and adding PUA compatibility ligatures for Emacs.'
+---
+
+The `ligations` subsection controls which programming ligatures are active when an application renders text using the `calt` OpenType feature. You can start from a language-specific preset, then fine-tune individual ligation groups to enable or disable them, or build the set entirely from individual group selections.
+
+## Subsection structure
+
+Ligation configuration lives under `[buildPlans.<PlanName>.ligations]`:
+
+```toml
+[buildPlans.IosevkaCustom.ligations]
+inherits = "default-calt"   # Optional; inherits an existing ligation set
+disables = []               # Optional; disable specific ligation groups, overrides inherited set
+enables  = []               # Optional; enable specific ligation groups, overrides inherited set
+```
+
+## inherits
+
+**Type:** string — optional
+
+Inherits a predefined ligation set as the starting point. When absent the ligation set starts empty. You can then add to it using `enables`.
+
+<AccordionGroup>
+  <Accordion title="General presets">
+    | Value | Ligation set |
+    |-------|-------------|
+    | `default-calt` | Default Iosevka ligation set |
+    | `dlig` | Default set assigned to Discretionary ligatures |
+  </Accordion>
+  <Accordion title="Language-specific presets">
+    | Value | Language |
+    |-------|----------|
+    | `clike` | C-Like languages |
+    | `javascript` | JavaScript |
+    | `php` | PHP |
+    | `julia` | Julia |
+    | `raku` | Raku |
+    | `ml` | ML |
+    | `fsharp` | F# |
+    | `fstar` | F* |
+    | `haskell` | Haskell |
+    | `idris` | Idris |
+    | `elm` | Elm |
+    | `purescript` | PureScript |
+    | `swift` | Swift |
+    | `dafny` | Dafny |
+    | `coq` | Coq |
+    | `matlab` | Matlab |
+    | `verilog` | Verilog |
+    | `wolfram` | Wolfram Language (Mathematica) |
+    | `erlang` | Erlang |
+  </Accordion>
+</AccordionGroup>
+
+## enables and disables
+
+**Type:** array of strings — optional
+
+Cherry-pick specific ligation groups to turn on or off. Groups listed in `enables` are added on top of the inherited set; groups in `disables` are removed. Both arrays override the inherited set on a per-group basis.
+
+<AccordionGroup>
+  <Accordion title="Arrow ligatures">
+    | Group | Description |
+    |-------|-------------|
+    | `arrow-l` | Left-pointing arrows |
+    | `arrow-r` | Right-pointing arrows |
+    | `arrow-lr` | Dual-pointing arrows |
+    | `counter-arrow-l` | Left-pointing counter-arrows |
+    | `counter-arrow-r` | Right-pointing counter-arrows |
+    | `arrow-hyphen` | Arrows using hyphen-minus (`-`) as the rod |
+    | `arrow-equal` | Arrows using equal sign (`=`) as the rod |
+    | `arrow-wave` | Arrows using tilde (`~`) as the rod |
+    | `counter-arrow-hyphen` | Counter-arrows using hyphen-minus (`-`) as the rod |
+    | `counter-arrow-equal` | Counter-arrows using equal sign (`=`) as the rod |
+    | `counter-arrow-wave` | Counter-arrows using tilde (`~`) as the rod |
+    | `arrow-l-hyphen` | Left-pointing arrows with hyphen-minus rod |
+    | `arrow-r-hyphen` | Right-pointing arrows with hyphen-minus rod |
+    | `arrow-lr-hyphen` | Dual-pointing arrows with hyphen-minus rod |
+    | `counter-arrow-l-hyphen` | Left-pointing counter-arrows with hyphen-minus rod |
+    | `counter-arrow-r-hyphen` | Right-pointing counter-arrows with hyphen-minus rod |
+    | `arrow-l-equal` | Left-pointing arrows with equal-sign rod |
+    | `arrow-r-equal` | Right-pointing arrows with equal-sign rod |
+    | `arrow-lr-equal` | Dual-pointing arrows with equal-sign rod |
+    | `counter-arrow-l-equal` | Left-pointing counter-arrows with equal-sign rod |
+    | `counter-arrow-r-equal` | Right-pointing counter-arrows with equal-sign rod |
+    | `arrow-l-wave` | Left-pointing arrows with tilde rod |
+    | `arrow-r-wave` | Right-pointing arrows with tilde rod |
+    | `arrow-lr-wave` | Dual-pointing arrows with tilde rod |
+    | `counter-arrow-l-wave` | Left-pointing counter-arrows with tilde rod |
+    | `counter-arrow-r-wave` | Right-pointing counter-arrows with tilde rod |
+  </Accordion>
+  <Accordion title="Equality and comparison operators">
+    | Group | Description |
+    |-------|-------------|
+    | `eqeqeq` | `===` with triple lines |
+    | `eqeq` | `==` and `===` |
+    | `lteq` | `<=` as less-than-or-equal |
+    | `eqlt` | `=<` as less-than-or-equal |
+    | `gteq` | `>=` as greater-than-or-equal |
+    | `lteq-separate` | `<=` displayed as separate shape |
+    | `eqlt-separate` | `=<` displayed as separate shape |
+    | `gteq-separate` | `>=` displayed as separate shape |
+    | `exeqeqeq` | `!===` with triple lines |
+    | `exeqeq` | `!==` with triple lines |
+    | `eqexeq` | `=!=` with triple lines |
+    | `eqexeq-dl` | `=!=` with double lines |
+    | `exeq` | `!=` and `!==` |
+    | `tildeeq` | `~=` as inequality |
+    | `eqslasheq` | `=/=` triple-line inequality |
+    | `slasheq` | `/=` and `=/=` as inequality |
+    | `ltgt-ne` | `<>` as inequality |
+    | `ltgt-diamond` | `<>` as diamond |
+    | `ltgt-diamond-tag` | `<>` as diamond-shaped empty HTML/XML tag |
+    | `ltgt-slash-tag` | `</`, `/>` and `</>` |
+    | `trig` | `<\|`, `\|>`, `<\|\|`, and other bar-and-angle-bracket symbols |
+  </Accordion>
+  <Accordion title="Repetition and connective ligatures">
+    | Group | Description |
+    |-------|-------------|
+    | `tilde-tilde` | 2+ contiguous tildes connected as wave (`~~`, `~~~`) |
+    | `tilde-tilde-tilde` | 3+ contiguous tildes connected as wave (`~~~`, `~~~~`) |
+    | `minus-minus` | 2+ contiguous hyphens connected as solid line (`--`, `---`) |
+    | `minus-minus-minus` | 3+ contiguous hyphens connected (`---`, `----`) |
+    | `plus-plus` | 2+ contiguous plus signs connected (`++`, `+++`) |
+    | `plus-plus-plus` | 3+ contiguous plus signs connected (`+++`, `++++`) |
+    | `underscore-underscore` | 2+ contiguous underscores connected (`__`, `___`) |
+    | `underscore-underscore-underscore` | 3+ contiguous underscores connected (`___`, `____`) |
+    | `hash-hash` | 2+ contiguous hash signs connected (`##`, `###`) |
+    | `hash-hash-hash` | 3+ contiguous hash signs connected (`###`, `####`) |
+    | `llgg` | `<<`, `>>` and other angle-bracket chaining |
+    | `llggeq` | `<<=`, `>>=` as shift operators |
+  </Accordion>
+  <Accordion title="Punctuation and symbol ligatures">
+    | Group | Description |
+    |-------|-------------|
+    | `brst` | Center asterisk in `(*` and `*)` |
+    | `slash-asterisk` | Shift asterisk in `/*` and `*/` |
+    | `kern-dotty` | Move dotty punctuations closer (`::`, `:::`, `...`) |
+    | `kern-bars` | Move consecutive bars closer (`\|\|`, `\|\|\|`, `//`) |
+    | `logic` | `/\` and `\/` |
+    | `html-comment` | `<!--` and `<!---` |
+    | `colon-greater-as-colon-arrow` | `:>` into `:` and a narrow arrow |
+    | `brace-bar` | `{\|` and `\|}` |
+    | `brack-bar` | `[\|` and `\|]` |
+    | `markdown-checkboxes` | Markdown checkboxes `- [ ]` and `- [x]` |
+  </Accordion>
+  <Accordion title="Center alignment ligatures">
+    | Group | Description |
+    |-------|-------------|
+    | `center-ops` | Vertically align operators like `*` when adjacent to a center operator like `+` |
+    | `center-op-trigger-plus-minus-l` | `+` and `-` trigger centering of operators to their left |
+    | `center-op-trigger-plus-minus-r` | `+` and `-` trigger centering of operators to their right |
+    | `center-op-trigger-equal-l` | `=` triggers centering of operators to its left |
+    | `center-op-trigger-equal-r` | `=` triggers centering of operators to its right |
+    | `center-op-trigger-bar-l` | `\|` triggers centering of operators to its left |
+    | `center-op-trigger-bar-r` | `\|` triggers centering of operators to its right |
+    | `center-op-trigger-angle-inside` | `<` and `>` trigger centering of operators at inside |
+    | `center-op-trigger-angle-outside` | `<` and `>` trigger centering of operators at outside |
+    | `center-op-influence-dot` | Treat `.` as operator and perform chained centering |
+    | `center-op-influence-colon` | Treat `:` as operator and perform chained centering |
+  </Accordion>
+</AccordionGroup>
+
+## Compatibility ligatures for Emacs
+
+Some applications — notably Emacs — do not support OpenType `calt` ligatures but can render ligatures placed at Private Use Area (PUA) codepoints. The `compatibilityLigatures` subsection lets you map specific character sequences to PUA codepoints.
+
+```toml
+[[buildPlans.IosevkaCustom.compatibilityLigatures]]
+unicode = 57600 # 0xE100
+featureTag = 'calt'
+sequence = '<*>'
+```
+
+Each entry is an array item (note the double brackets `[[...]]`) with three required fields:
+
+| Field | Type | Description |
+|-------|------|-------------|
+| `unicode` | integer | PUA codepoint to assign (decimal or hex) |
+| `featureTag` | string | OpenType feature to derive the ligature from (`calt` in most cases) |
+| `sequence` | string | The character sequence to ligate |
+
+You can add as many entries as needed:
+
+```toml
+[[buildPlans.IosevkaCustom.compatibilityLigatures]]
+unicode = 57600 # 0xE100
+featureTag = 'calt'
+sequence = '<*>'
+
+[[buildPlans.IosevkaCustom.compatibilityLigatures]]
+unicode = 57601 # 0xE101
+featureTag = 'calt'
+sequence = '<*<'
+```
+
+<Note>
+  Remove the `compatibilityLigatures` section entirely when you do not need it. Including it generates additional glyphs at PUA codepoints that may interfere with other fonts in a fallback chain.
+</Note>
+
+## Full example from the sample file
+
+```toml
+[buildPlans.IosevkaCustom.ligations]
+inherits = "default-calt"   # Optional; inherits an existing ligation set
+disables = []               # Optional; disable specific ligation groups, overrides inherited set
+enables  = []               # Optional; enable specific ligation groups, overrides inherited set
+
+# Compatibility ligatures for Emacs (remove if not needed)
+[[buildPlans.IosevkaCustom.compatibilityLigatures]]
+unicode = 57600 # 0xE100
+featureTag = 'calt'
+sequence = '<*>'
+```
+
+A JavaScript-focused build that disables arrow ligatures and enables extra equality ligatures:
+
+```toml
+[buildPlans.IosevkaCustom.ligations]
+inherits = "javascript"
+disables = ["arrow-l-hyphen", "arrow-r-hyphen"]
+enables  = ["eqeqeq", "exeqeq"]
+```

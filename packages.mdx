@@ -1,0 +1,94 @@
+---
+title: "Iosevka font packages and download formats"
+description: "Browse Iosevka's prebuilt package families, spacing variants, and available download formats: Super TTC, TTC, TTF (hinted and unhinted), and WebFont."
+---
+
+Iosevka is released as a large family of prebuilt packages, each targeting a specific visual style, spacing behavior, and download format. Whether you want a single bundled file for desktop use or individual TTF files for embedding in an application, there is a package format to match. All packages are available on the [GitHub Releases page](https://github.com/be5invis/Iosevka/releases).
+
+## Packaging formats
+
+Every Iosevka package family is available in four distribution formats:
+
+| Format | Contents | Best for |
+| --- | --- | --- |
+| **Super TTC** | 1 `.ttc` file — all fonts bundled together | Desktop installation on modern operating systems |
+| **TTC** | 9 `.ttc` files — one per weight | Desktop use when a single bundled file is too large |
+| **TTF** | 54 `.ttf` files — one per weight, width, slope, and spacing variant | Embedding in applications; also available in an unhinted variant that reduces file size |
+| **WebFont** | 1 `.css` file + 54 `.woff2` files + 54 `.ttf` files | Using Iosevka on websites |
+
+<Tip>
+  For desktop use, download the **Super TTC** package. It bundles all fonts into a single file and is the simplest way to get the complete family installed. Requires a modern operating system with TTC support.
+</Tip>
+
+## Spacing variants
+
+Every monospace package family includes three spacing variants:
+
+**Default** — The standard variant with ligatures enabled. Arrows, geometric symbols, and other wide glyphs occupy 2 columns, which gives them visual weight matching their semantic scale in most editors.
+
+**Term** — A narrower variant for terminal use. Arrows and geometric symbols render as single-column characters, matching the typical convention of terminal emulators where every character is expected to be exactly one cell wide.
+
+**Fixed** — A strictly monospace variant with no ligatures and no wide glyphs. Use this when your environment does not correctly interpret Iosevka as monospace, or when ligatures cause rendering issues.
+
+## Prebuilt package families
+
+### Core monospace families
+
+<CardGroup cols={2}>
+  <Card title="Iosevka" icon="font" href="https://github.com/be5invis/Iosevka/releases">
+    Sans-serif, default style. The base Iosevka design. Includes Default, Term, and Fixed spacing variants.
+  </Card>
+  <Card title="Iosevka Slab" icon="font" href="https://github.com/be5invis/Iosevka/releases">
+    Slab-serif variant of the core design. Same spacing variants and weights as Iosevka.
+  </Card>
+  <Card title="Iosevka Curly" icon="font" href="https://github.com/be5invis/Iosevka/releases">
+    Sans-serif with a curly style — rounder, more fluid letterforms. Includes all three spacing variants.
+  </Card>
+  <Card title="Iosevka Curly Slab" icon="font" href="https://github.com/be5invis/Iosevka/releases">
+    Curly style combined with slab-serif terminals. Includes all three spacing variants.
+  </Card>
+</CardGroup>
+
+### Quasi-proportional families
+
+<CardGroup cols={2}>
+  <Card title="Iosevka Aile" icon="align-left" href="https://github.com/be5invis/Iosevka/releases">
+    Quasi-proportional sans-serif. Proportionally spaced for prose, documentation, and mixed-content layouts. No ligatures.
+  </Card>
+  <Card title="Iosevka Etoile" icon="align-left" href="https://github.com/be5invis/Iosevka/releases">
+    Quasi-proportional slab-serif. Same proportional spacing as Aile with slab-serif terminals. No ligatures.
+  </Card>
+</CardGroup>
+
+### Style preset families (SS01–SS20)
+
+Iosevka provides 20 style preset packages, each applying a global character variant configuration that emulates the aesthetic of a well-known coding font. All style presets are monospace and include Default, Term, and Fixed spacing variants.
+
+| Package | Style |
+| --- | --- |
+| Iosevka SS01 | Andale Mono style |
+| Iosevka SS02 | Anonymous Pro style |
+| Iosevka SS03 | Consolas style |
+| Iosevka SS04 | Menlo style |
+| Iosevka SS05 | Fira Mono style |
+| Iosevka SS06 | Liberation Mono style |
+| Iosevka SS07 | Monaco style |
+| Iosevka SS08 | Pragmata Pro style |
+| Iosevka SS09 | Source Code Pro style |
+| Iosevka SS10 | Envy Code R style |
+| Iosevka SS11 | X Windows Fixed style |
+| Iosevka SS12 | Ubuntu Mono style |
+| Iosevka SS13 | Lucida style |
+| Iosevka SS14 | JetBrains Mono style |
+| Iosevka SS15 | IBM Plex Mono style |
+| Iosevka SS16 | PT Mono style |
+| Iosevka SS17 | Recursive Mono style |
+| Iosevka SS18 | Input Mono style |
+
+<Note>
+  Style presets apply a fixed set of character variant options at the package level. If you want to mix and match individual character shapes, use the [online customizer](https://be5invis.github.io/Iosevka/customizer) or build Iosevka from source to create your own variant configuration.
+</Note>
+
+## Downloads
+
+All packages are available on the [Iosevka GitHub Releases page](https://github.com/be5invis/Iosevka/releases). Each release lists every package family with direct download links for Super TTC, TTC, TTF (hinted and unhinted), and WebFont formats.

@@ -1,0 +1,82 @@
+---
+title: 'Language support and character coverage'
+description: 'Iosevka covers Latin, Greek Polytonic, Cyrillic, and IPA. Lists 248 supported languages, CJK companion font guidance, and mainland China download mirrors.'
+---
+
+Every Iosevka family — monospace and quasi-proportional — ships with the same character coverage. You do not need to choose a family based on script support; the character set is consistent across all prebuilt variants.
+
+## Character ranges
+
+Iosevka covers the following Unicode blocks and script ranges:
+
+<CardGroup cols={2}>
+  <Card title="Latin" icon="a">
+    Full Basic Latin, Latin Extended-A, Latin Extended-B, Latin Extended Additional, and a broad selection of Latin supplement characters. Covers all accented and diacritical forms needed for European languages.
+  </Card>
+  <Card title="Greek and Coptic / Greek Extended" icon="circle">
+    Includes **Polytonic Greek** — the full range of ancient and scholarly Greek with all breathing marks, accent combinations, and iota subscripts needed for classical texts.
+  </Card>
+  <Card title="Cyrillic" icon="list">
+    A broad selection of Cyrillic characters covering Russian, Ukrainian, Bulgarian, Serbian, Macedonian, Belarusian, and numerous other Cyrillic-script languages.
+  </Card>
+  <Card title="IPA extensions" icon="mic">
+    International Phonetic Alphabet symbols and phonetic extensions, including superscript letters and modifier letters used in linguistic transcription.
+  </Card>
+  <Card title="Punctuation and symbols" icon="type">
+    General punctuation, currency symbols, letterlike symbols, arrows, mathematical operators, box-drawing characters, block elements, geometric shapes, and miscellaneous technical symbols.
+  </Card>
+  <Card title="Spacing modifier letters" icon="space">
+    Combining diacritical marks, spacing modifier letters, and superscript/subscript forms for phonetic, mathematical, and typographic use.
+  </Card>
+</CardGroup>
+
+<Tip>
+  You can inspect the full glyph inventory interactively at the [Iosevka specimen page](https://be5invis.github.io/Iosevka/specimen).
+</Tip>
+
+## Supported languages
+
+Iosevka supports **248 languages** through its Latin, Greek, and Cyrillic character coverage. The full list includes languages from Europe, Africa, the Americas, Central Asia, and the Pacific.
+
+<AccordionGroup>
+  <Accordion title="European languages (selection)">
+    Albanian, Asturian, Basque, Bosnian, Breton, Bulgarian, Catalan, Croatian, Czech, Danish, Dutch, English, Estonian, Faroese, Finnish, French, Friulian, Galician, German, Greek, Hungarian, Icelandic, Irish, Italian, Latvian, Lithuanian, Luxembourgish, Macedonian, Maltese, Manx, Norwegian (Bokmål and Nynorsk), Occitan, Polish, Portuguese, Romanian, Romansh, Russian, Scottish Gaelic, Serbian, Slovak, Slovenian, Spanish, Swedish, Ukrainian, Welsh
+  </Accordion>
+  <Accordion title="African languages (selection)">
+    Afar, Afrikaans, Aghem, Akan, Akoose, Asu, Atsam, Bafia, Bambara, Basaa, Bemba, Bena, Duala, Embu, Ewondo, Fula, Ga, Ganda, Gusii, Hausa, Igbo, Jju, Jola-Fonyi, Kabuverdianu, Kabyle, Kako, Kalenjin, Kamba, Kenyang, Kikuyu, Kinyarwanda, Koyra Chiini, Koyraboro Senni, Kpelle, Kwasio, Langi, Lingala, Luba-Katanga, Luo, Luyia, Machame, Makhuwa, Makonde, Masai, Meru, Mundang, Nama, Ngiemboon, Ngomba, North Ndebele, Nuer, Nyanja, Nyankole, Obolo, Oromo, Rundi, Rwa, Saho, Samburu, Sango, Sangu, Sena, Shambala, Shona, Sidamo, Soga, Somali, South Ndebele, Tachelhit, Taita, Tasawaq, Teso, Vunjo, Wolof, Yoruba, Zarma
+  </Accordion>
+  <Accordion title="American and Pacific languages (selection)">
+    Caddo, Chickasaw, Choctaw, Guarani, Hawaiian, Inuktitut (Latin), Kaingang, Kʼicheʼ, Lakota, Mapuche, Mi'kmaw, Mohawk, Muscogee, Navajo, Nheengatu, Okanagan, Papiamento, Qʼeqchiʼ, Quechua, Māori, Pijin
+  </Accordion>
+  <Accordion title="Central and North Asian languages (selection)">
+    Azerbaijani, Bashkir, Buriat, Chechen, Chuvash, Erzya, Kazakh, Kara-Kalpak, Kyrgyz, Moksha, Mongolian, Ossetic
+  </Accordion>
+  <Accordion title="Other languages and constructed languages">
+    Armenian, Esperanto, Ido, Interlingua, Interlingue, Latin, Lojban, Pali, Sanskrit (Latin romanization), Volapük, and a number of regional minority languages and transliteration systems.
+  </Accordion>
+</AccordionGroup>
+
+The complete list of all 248 languages can be found in the [Iosevka README](https://github.com/be5invis/Iosevka#readme).
+
+## CJK users
+
+Iosevka does **not** include CJK (Chinese, Japanese, Korean) characters. For CJK support, use [Sarasa Gothic](https://github.com/be5invis/Sarasa-Gothic), a companion project by the same author that combines Iosevka with the Source Han Sans CJK glyphs. Sarasa Gothic maintains the same character style and proportions as Iosevka for ASCII content, ensuring visual consistency in mixed-script environments.
+
+<Note>
+  Sarasa Gothic is maintained as a separate project and has its own release schedule, which may lag behind the latest Iosevka release.
+</Note>
+
+## Download mirrors
+
+Official releases are hosted on GitHub. Users in mainland China may find the following mirrors faster:
+
+<CardGroup cols={2}>
+  <Card title="TUNA mirror" icon="server" href="https://mirrors.tuna.tsinghua.edu.cn/github-release/be5invis/Iosevka">
+    Hosted by Tsinghua University. Mirrors GitHub release assets for all Iosevka versions.
+  </Card>
+  <Card title="NJU mirror" icon="server" href="https://mirrors.nju.edu.cn/github-release/be5invis/Iosevka">
+    Hosted by Nanjing University. An alternative mirror for GitHub release assets.
+  </Card>
+</CardGroup>
+
+Both mirrors sync GitHub release assets. Download the same package filenames from either mirror as you would from the official GitHub releases page.

@@ -1,0 +1,138 @@
+---
+title: 'Weights, widths, and slopes in Iosevka'
+description: 'All 9 Iosevka weights (Thin to Heavy), 2 widths (Normal and Extended), and 3 slopes with CSS font-weight, font-stretch, and font-style usage examples.'
+---
+
+Every Iosevka monospace family includes a full range of weights, two widths, and three slopes. These axes combine to cover a broad spectrum of typographic expression while maintaining consistent character alignment across all variants. Quasi-proportional families (Aile and Etoile) support all weights and slopes but only the Normal width.
+
+## Weights
+
+Iosevka provides 9 weights spanning from Thin to Heavy.
+
+| Weight name | CSS value (`font-weight`) |
+|---|---|
+| Thin | 100 |
+| ExtraLight | 200 |
+| Light | 300 |
+| Regular | 400 |
+| Medium | 500 |
+| SemiBold | 600 |
+| Bold | 700 |
+| ExtraBold | 800 |
+| Heavy | 900 |
+
+<Note>
+  Each weight is a separate font file in the TTF package. In TTC packages, each `.ttc` file bundles all fonts at a given weight across all widths and slopes.
+</Note>
+
+### Choosing a weight for code
+
+Most developers use Regular (400) or Medium (500). Lighter weights (Thin, ExtraLight, Light) suit high-resolution displays where fine strokes remain clear. Heavier weights (SemiBold, Bold, ExtraBold) improve legibility on low-DPI screens or when font smoothing is aggressive.
+
+## Widths
+
+Iosevka monospace families include two widths. Quasi-proportional families (Aile, Etoile) offer only Normal width.
+
+<CardGroup cols={2}>
+  <Card title="Normal" icon="minus">
+    The default width. Each character cell is **500 units** wide. This is the standard choice for most editors and terminals.
+  </Card>
+  <Card title="Extended" icon="arrow-right-left">
+    A wider variant where each character cell is **600 units** wide. Extended glyphs give each character more horizontal breathing room, which can improve legibility for some readers or match the visual rhythm of wider UI fonts.
+  </Card>
+</CardGroup>
+
+The width is selected via the `font-stretch` CSS property or the corresponding OS font picker option.
+
+```css
+/* Normal width */
+font-family: 'Iosevka';
+font-stretch: normal; /* or 100% */
+
+/* Extended width */
+font-family: 'Iosevka';
+font-stretch: expanded; /* or 125% */
+```
+
+<Tip>
+  The Extended width is available in all nine weights and all three slopes, producing 27 distinct Extended fonts per family (54 total with Normal).
+</Tip>
+
+## Slopes
+
+Each weight and width combination exists in three slopes.
+
+<Tabs>
+  <Tab title="Upright">
+    **Upright** is the default, non-slanted style. Characters sit vertically on the baseline with no angle applied. This is what you get when no italic or oblique style is requested.
+
+    ```css
+    font-style: normal;
+    ```
+  </Tab>
+  <Tab title="Italic">
+    **Italic** applies a true italic design — glyph shapes are redrawn with calligraphic influences. Certain characters (particularly lowercase letters like `a`, `f`, `g`, `i`, `j`, `l`) take on noticeably different forms in italic compared to upright.
+
+    ```css
+    font-style: italic;
+    ```
+  </Tab>
+  <Tab title="Oblique">
+    **Oblique** is a slanted version of the upright design. Unlike Italic, oblique glyphs are the same shapes as upright but drawn at an angle (approximately 9.4°). Use this when you want slant emphasis without the calligraphic glyph substitutions that Italic introduces.
+
+    ```css
+    font-style: oblique;
+    /* or for explicit angle: */
+    font-style: oblique 9deg;
+    ```
+  </Tab>
+</Tabs>
+
+## Combining weights, widths, and slopes
+
+The three axes multiply to give a large number of distinct font instances per family:
+
+- 9 weights × 2 widths × 3 slopes = **54 fonts per family** (in the TTF package)
+- Quasi-proportional families: 9 weights × 1 width × 3 slopes = **27 fonts per family**
+
+### CSS usage
+
+Select any combination using standard CSS font properties:
+
+```css
+/* SemiBold Extended Italic */
+font-family: 'Iosevka';
+font-weight: 600;
+font-stretch: expanded;
+font-style: italic;
+
+/* Light Normal Oblique */
+font-family: 'Iosevka Term';
+font-weight: 300;
+font-stretch: normal;
+font-style: oblique;
+
+/* Heavy Extended Upright */
+font-family: 'Iosevka Fixed';
+font-weight: 900;
+font-stretch: expanded;
+font-style: normal;
+```
+
+When using the WebFont package, the bundled `.css` file contains `@font-face` declarations for all 54 fonts in the family, so any combination you specify in CSS will be served correctly.
+
+### Variable font note
+
+Iosevka is distributed as static (non-variable) fonts. Each weight, width, and slope is a discrete file. There is no single variable font file that covers all axes continuously.
+
+## Availability across family types
+
+| Axis | Monospace families | Quasi-proportional (Aile, Etoile) |
+|---|---|---|
+| Weights | All 9 | All 9 |
+| Widths | Normal and Extended | Normal only |
+| Slopes | Upright, Italic, Oblique | Upright, Italic, Oblique |
+
+<Note>
+  The Extended width is only present in the monospace families. If you need width variation in prose text, use a different typeface alongside Aile or Etoile.
+</Note>

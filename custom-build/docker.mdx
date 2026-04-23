@@ -1,0 +1,162 @@
+---
+title: 'Building Iosevka with Docker: Containerized Font Builds'
+description: 'Build Iosevka in a Docker container without local dependencies. Covers the SOURCE and NPM_REG variables, build target examples, and local source overrides.'
+---
+
+Docker lets you build Iosevka without installing Node.js or ttfautohint on your machine. The container handles all dependencies internally; you only need Docker. This approach is especially useful for CI pipelines or when you want a clean, reproducible build environment.
+
+## Step 1: Build the Docker image
+
+Clone the repository and build the image once. You can use any image name you like — this guide uses `iosevka-builder`:
+
+```bash
+git clone --depth 1 https://github.com/be5invis/Iosevka.git
+cd Iosevka
+docker build -t iosevka-builder docker
+```
+
+Confirm the image was created:
+
+```bash
+docker images | grep iosevka-builder
+```
+
+Expected output:
+
+```bash
+iosevka-builder            latest      c847d5e08886   About a minute ago   491MB
+```
+
+<Note>
+  The Docker container downloads a fresh copy of the Iosevka source by default during each build run. You can delete the cloned repository after building the image unless you plan to use local source mode (see below).
+</Note>
+
+## Step 2: Run a build
+
+The general command format is:
+
+```bash
+docker run -it --rm [-e SOURCE=<SOURCE>] [-e NPM_REG=<URL>] -v $PWD:/work iosevka-builder [<BUILD_ARGS>]
+```
+
+Output font files are written to your current directory via the `-v $PWD:/work` volume mount.
+
+### Environment variables
+
+<AccordionGroup>
+  <Accordion title="SOURCE — which version to download">
+    Controls the Iosevka source version the container downloads. When unset, defaults to the latest release.
+
+    | Format | Example | Meaning |
+    |--------|---------|---------|
+    | `ref` | `v34.1.0`, `main`, `abc123f` | Tag, branch, or commit from the official repo |
+    | `owner/repo@ref` | `you/YourFork@v34.1.0` | Tag, branch, or commit from a specific fork |
+    | `owner/repo` | `you/YourFork` | Latest release from a specific fork |
+
+    ```bash
+    docker run -it --rm -e SOURCE=v34.1.0 -v $PWD:/work iosevka-builder contents::Iosevka
+    ```
+  </Accordion>
+  <Accordion title="NPM_REG — custom NPM registry">
+    Overrides the NPM registry URL. Useful when you are behind a corporate proxy or need to use a mirror.
+
+    ```bash
+    docker run -it --rm \
+      -e NPM_REG=https://mirrors.huaweicloud.com/repository/npm \
+      -v $PWD:/work iosevka-builder contents::Iosevka
+    ```
+  </Accordion>
+</AccordionGroup>
+
+The `[<BUILD_ARGS>]` at the end of the command are the same build targets you would pass to `npm run build --`, such as `contents::IosevkaCustom` or `ttf::IosevkaSS06`. See [build targets](/custom-build/overview#build-targets) for the full list.
+
+## Build examples
+
+<Tabs>
+  <Tab title="Default build">
+    Build the latest release of Iosevka in all formats:
+
+    ```bash
+    docker run -it --rm -v $PWD:/work iosevka-builder
+    ```
+  </Tab>
+  <Tab title="Custom build">
+    Build specific prebuilt variants at a pinned version — `ss06` in all formats, `ss12` TTF only, and `ss15` webfont only:
+
+    ```bash
+    docker run -it --rm \
+      -e SOURCE=v34.1.0 \
+      -v $PWD:/work \
+      iosevka-builder contents::IosevkaSS06 ttf::IosevkaSS12 webfont::IosevkaSS15
+    ```
+  </Tab>
+  <Tab title="Custom build plans">
+    Merge multiple plan files into `private-build-plans.toml` and build them:
+
+    ```bash
+    cat myfont1.toml myfont2.toml myfont3.toml > private-build-plans.toml
+    docker run -it --rm \
+      -e SOURCE=v34.1.0 \
+      -v $PWD:/work \
+      iosevka-builder ttf::MyFont1 ttf::MyFont2 contents::MyFont3
+    ```
+
+    The container picks up `private-build-plans.toml` from the working directory automatically.
+  </Tab>
+  <Tab title="Fork">
+    Build from a fork at a specific tag:
+
+    ```bash
+    docker run -it --rm \
+      -e SOURCE=you/YourIosevkaFork@v34.1.0 \
+      -v $PWD:/work \
+      iosevka-builder contents::Iosevka
+    ```
+  </Tab>
+</Tabs>
+
+## Avoiding repeated downloads
+
+Each container run downloads and unpacks a source tarball and installs dependencies from scratch. When you are iterating on a build plan, override the entrypoint to keep the container running between builds.
+
+### Interactive mode with downloaded source
+
+```bash
+docker run -it --rm -v $PWD:/work --entrypoint bash iosevka-builder
+$ /build.sh ttf::MyFont
+# Edit your plan, then rebuild without re-downloading
+$ cat myfont1.toml myfont2.toml myfont3.toml > private-build-plans.toml
+$ /build.sh ttf::MyFont
+# Switch to a different source version
+$ SOURCE=v34.0.0 /build.sh ttf::MyFont
+$ exit
+```
+
+`/build.sh` tracks the version used in the previous run and only re-downloads when the version changes.
+
+### Using a local Iosevka checkout
+
+Mount your local source directory as `/work` and override the entrypoint to skip the download entirely:
+
+```bash
+# Single command build from local source
+docker run -it --rm \
+  -v /path/to/iosevka:/work \
+  --entrypoint bash \
+  iosevka-builder -c 'npm install && npm run build -- ttf::MyFont'
+```
+
+For repeated builds from local source in interactive mode:
+
+```bash
+docker run -it --rm -v /path/to/iosevka:/work --entrypoint bash iosevka-builder
+$ npm install
+$ npm run build -- ttf::MyFont
+# Make changes to private-build-plans.toml, then rebuild
+$ npm run build -- ttf::MyFont
+$ exit
+```
+
+<Tip>
+  To prepare custom build plans for Docker, create a `private-build-plans.toml` file following the instructions in [Build plans](/custom-build/build-plans) or use the [Iosevka Customizer](https://be5invis.github.io/Iosevka/customizer) to generate the file.
+</Tip>

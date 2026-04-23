@@ -1,0 +1,156 @@
+---
+title: 'Custom Build Overview: Build Iosevka from Source'
+description: 'Set up prerequisites, clone Iosevka, install dependencies, and run font builds using targets like contents, ttf, webfont, and woff2 with the --jCmd memory flag.'
+---
+
+Building Iosevka from source gives you full control over the output: you can target specific formats, restrict the build to certain weights or widths, and apply a private build plan that tailors every glyph to your taste. This page walks you through prerequisites, getting the source, installing dependencies, and running your first build.
+
+## Prerequisites
+
+Before you start, install the following two tools and verify they are accessible on your `PATH`:
+
+<CardGroup cols={2}>
+  <Card title="Node.js ≥ 18" icon="node-js" href="https://nodejs.org">
+    The build system is driven by Node.js. Version 18.0.0 or later is required.
+  </Card>
+  <Card title="ttfautohint" icon="font" href="https://freetype.org/ttfautohint/">
+    Applies TrueType hinting to the generated TTF files. Required for hinted build targets.
+  </Card>
+</CardGroup>
+
+<Tip>
+  Confirm both tools are available before proceeding by running `node --version` and `ttfautohint --version` in your terminal.
+</Tip>
+
+## Getting the source
+
+<Tabs>
+  <Tab title="Git clone">
+    Clone only the latest commit to keep the download small:
+
+    ```bash
+    git clone --depth 1 https://github.com/be5invis/Iosevka.git
+    ```
+  </Tab>
+  <Tab title="ZIP archive">
+    Download and extract the source archive from GitHub:
+
+    ```
+    https://github.com/be5invis/Iosevka/archive/refs/heads/main.zip
+    ```
+  </Tab>
+</Tabs>
+
+## Running your first build
+
+<Steps>
+  <Step title="Open a terminal in the Iosevka directory">
+    Change into the directory where you cloned or extracted the source:
+
+    ```bash
+    cd Iosevka
+    ```
+  </Step>
+  <Step title="Install NPM dependencies">
+    This installs every dependency the build system needs. Run it once after cloning, and again whenever you update the source:
+
+    ```bash
+    npm install
+    ```
+  </Step>
+  <Step title="Run the build">
+    Pass a target and plan name separated by `::`. The built files are placed in the `dist/` directory:
+
+    ```bash
+    npm run build -- contents::Iosevka
+    ```
+  </Step>
+</Steps>
+
+## Build targets
+
+Every build command follows the pattern `<target>::<plan>`. Replace `<plan>` with your plan name (for example, `IosevkaCustom`).
+
+<AccordionGroup>
+  <Accordion title="contents::<plan> — everything">
+    Builds all formats: hinted TTF, unhinted TTF, webfont CSS + WOFF2, and unhinted webfont variants. This is the most complete output and also the slowest to produce.
+
+    ```bash
+    npm run build -- contents::IosevkaCustom
+    ```
+  </Accordion>
+  <Accordion title="ttf::<plan> — hinted TTF only">
+    Builds only hinted TrueType font files. Suitable for desktop use where hinting improves rendering at small sizes on low-DPI displays.
+
+    ```bash
+    npm run build -- ttf::IosevkaCustom
+    ```
+  </Accordion>
+  <Accordion title="ttf-unhinted::<plan> — unhinted TTF only">
+    Builds TrueType files without hinting. Faster than the hinted build and appropriate for high-DPI displays where hinting has little visible effect.
+
+    ```bash
+    npm run build -- ttf-unhinted::IosevkaCustom
+    ```
+  </Accordion>
+  <Accordion title="webfont::<plan> — CSS + WOFF2 (hinted)">
+    Builds a hinted webfont package: a CSS file and WOFF2 files. Use this when embedding Iosevka in a website.
+
+    ```bash
+    npm run build -- webfont::IosevkaCustom
+    ```
+  </Accordion>
+  <Accordion title="webfont-unhinted::<plan> — unhinted CSS + WOFF2">
+    Same as `webfont` but skips hinting. Produces smaller files; appropriate for high-DPI web deployments.
+
+    ```bash
+    npm run build -- webfont-unhinted::IosevkaCustom
+    ```
+  </Accordion>
+  <Accordion title="woff2::<plan> — WOFF2 files only (hinted)">
+    Builds only the hinted WOFF2 binary files, without generating a CSS file.
+
+    ```bash
+    npm run build -- woff2::IosevkaCustom
+    ```
+  </Accordion>
+  <Accordion title="woff2-unhinted::<plan> — unhinted WOFF2 only">
+    Builds only the unhinted WOFF2 binary files, without generating a CSS file.
+
+    ```bash
+    npm run build -- woff2-unhinted::IosevkaCustom
+    ```
+  </Accordion>
+</AccordionGroup>
+
+You can pass multiple targets in a single command:
+
+```bash
+npm run build -- ttf::IosevkaCustom webfont::IosevkaCustom
+```
+
+## Managing RAM and CPU usage
+
+<Warning>
+  By default the build system schedules one concurrent job per CPU thread. Each job consumes more than 1 GB of RAM at peak. On machines without sufficient memory, this will push the system to its limits and may cause build failures or severe slowdowns due to swap usage.
+</Warning>
+
+Use the `--jCmd` flag to limit the number of concurrent jobs:
+
+```bash
+# Limit to 2 concurrent jobs to reduce peak memory usage
+npm run build -- contents::IosevkaCustom --jCmd=2
+```
+
+Setting `--jCmd=1` serialises all jobs and minimises memory pressure at the cost of a longer total build time.
+
+## Next steps
+
+<CardGroup cols={2}>
+  <Card title="Build plans" icon="file-code" href="/custom-build/build-plans">
+    Learn how to create a `private-build-plans.toml` file and configure all top-level plan properties.
+  </Card>
+  <Card title="Docker builds" icon="docker" href="/custom-build/docker">
+    Run the build inside a Docker container without installing Node.js or ttfautohint locally.
+  </Card>
+</CardGroup>

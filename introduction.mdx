@@ -1,0 +1,52 @@
+---
+title: "Iosevka overview: fonts, features, and variants"
+description: "Overview of Iosevka: its subfamily structure, 9 weights, 3 slopes, OpenType ligatures, stylistic sets, character variants, and 248-language coverage."
+---
+
+Iosevka [ˌjɔˈseβ.kʰa] is an open-source typeface family built specifically for writing code, using in terminals, and preparing technical documents. It comes in both sans-serif and slab-serif styles, offers true monospace and quasi-proportional variants, and is built entirely from source — making it uniquely customizable at a glyph-by-glyph level through a build system written in code.
+
+## Font family structure
+
+The official Iosevka package organizes its fonts into two broad categories: monospace subfamilies and quasi-proportional subfamilies.
+
+**Monospace subfamilies** include 6 families — sans-serif and slab-serif, each available in three spacing variants (Default, Term, and Fixed). Every monospace subfamily ships with:
+
+- **9 weights**: Thin, Extra-Light, Light, Regular, Medium, Semi-Bold, Bold, Extra-Bold, and Heavy
+- **2 widths**: Normal and Extended
+- **3 slopes**: Upright, Italic, and Oblique
+
+**Quasi-proportional subfamilies** include 2 families — Iosevka Aile (sans-serif) and Iosevka Etoile (slab-serif). These are proportionally spaced rather than fixed-width, with a single width variant each. They are designed for body text and prose that benefits from the Iosevka aesthetic outside of a strictly monospace context.
+
+<CardGroup cols={3}>
+  <Card title="Installation" icon="download" href="/installation">
+    Install Iosevka on Windows, macOS, Linux, FreeBSD, or OpenBSD using package managers or manual download.
+  </Card>
+  <Card title="Packages" icon="box" href="/packages">
+    Browse prebuilt package families and download formats, from Super TTC bundles to WebFont packages.
+  </Card>
+  <Card title="Custom build" icon="sliders" href="https://be5invis.github.io/Iosevka/customizer">
+    Use the online customizer or build from source to create a tailored variant with your preferred glyph shapes.
+  </Card>
+</CardGroup>
+
+## Key features
+
+**OpenType ligatures**: Monospace subfamilies support programming ligatures via the `calt` feature, with additional discretionary ligatures available via `dlig`. Language-specific ligation sets are also supported through custom feature tags.
+
+**Stylistic sets**: Iosevka ships with a large set of stylistic sets (OpenType `ss01`–`ss20`) that change the shape of individual characters, letting you adopt the aesthetic of fonts like Consolas, JetBrains Mono, or IBM Plex Mono while retaining Iosevka's coverage and build system.
+
+**Character variants**: Beyond stylistic sets, individual character shapes can be selected using OpenType character variant features (`cv01`–`cv99`). For example, setting `cv26` to `6` enables a single-storey `a`.
+
+**Style presets (SS01–SS20)**: Twenty prebuilt style preset packages are available, each modeled after a well-known coding font — Andale Mono, Anonymous Pro, Consolas, Menlo, Fira Mono, Liberation Mono, Monaco, Pragmata Pro, Source Code Pro, and more.
+
+**Quasi-proportional variants**: Iosevka Aile and Iosevka Etoile bring the Iosevka design to proportional spacing, suitable for prose, documentation, and mixed-content layouts.
+
+## Character ranges and language support
+
+All Iosevka variants cover the same set of character ranges: Latin letters, Greek letters (including Polytonic Greek), selected Cyrillic letters, IPA symbols, common punctuation, and a range of technical and mathematical symbols.
+
+Iosevka supports **248 languages**, including Abkhazian, Albanian, Azerbaijani, Belarusian, Bulgarian, Catalan, Croatian, Czech, Danish, Dutch, English, Estonian, Finnish, French, German, Greek, Hungarian, Icelandic, Irish, Italian, Latvian, Lithuanian, Macedonian, Maltese, Norwegian, Polish, Portuguese, Romanian, Russian, Serbian, Slovak, Slovenian, Spanish, Swedish, Turkish, Ukrainian, and many others across Latin, Greek, and Cyrillic scripts.
+
+<Note>
+  CJK (Chinese, Japanese, Korean) users should look at [Sarasa Gothic](https://github.com/be5invis/Sarasa-Gothic), which combines Iosevka with CJK glyphs.
+</Note>

@@ -1,0 +1,103 @@
+---
+title: "Stylistic sets in Iosevka (ss01–ss20)"
+description: "Apply a complete character style preset in Iosevka using OpenType stylistic sets ss01–ss20, each modeled after a well-known monospace font."
+---
+
+Iosevka ships with 19 stylistic sets — OpenType features tagged `ss01` through `ss20` — each of which applies a curated group of character shape changes that together match the aesthetic of a well-known monospace font. Enabling a stylistic set is a quick way to adjust the overall feel of Iosevka without configuring individual character variants.
+
+Stylistic sets are only available in the **monospace subfamilies** of Iosevka. Each set changes the shape of a selection of glyphs including letters, digits, and punctuation, and the changes affect upright, italic, and oblique slopes simultaneously unless you use a custom build to override per-slope.
+
+## Available stylistic sets
+
+| Feature | Style name |
+|---------|------------|
+| `ss01` | Andale Mono Style |
+| `ss02` | Anonymous Pro Style |
+| `ss03` | Consolas Style |
+| `ss04` | Menlo Style |
+| `ss05` | Fira Mono Style |
+| `ss06` | Liberation Mono Style |
+| `ss07` | Monaco Style |
+| `ss08` | Pragmata Pro Style |
+| `ss09` | Source Code Pro Style |
+| `ss10` | Envy Code R Style |
+| `ss11` | X Window Style |
+| `ss12` | Ubuntu Mono Style |
+| `ss13` | Lucida Style |
+| `ss14` | JetBrains Mono Style |
+| `ss15` | IBM Plex Mono Style |
+| `ss16` | PT Mono Style |
+| `ss17` | Recursive Mono Style |
+| `ss18` | Input Mono Style |
+| `ss20` | Curly Style |
+
+<Note>
+  There is no `ss19`. The numbering jumps from `ss18` to `ss20`. This is intentional — `ss19` is not defined in Iosevka.
+</Note>
+
+## How to enable a stylistic set
+
+Only one stylistic set should be active at a time. Enabling multiple sets simultaneously may produce unexpected results, since the sets can assign conflicting shapes to the same characters.
+
+<Tabs>
+  <Tab title="CSS">
+    Pass the feature tag with a value of `1` in `font-feature-settings`:
+
+    ```css
+    code, pre {
+      font-family: "Iosevka Web", monospace;
+      font-feature-settings: "ss03" 1; /* Consolas Style */
+    }
+    ```
+
+    To disable a previously set stylistic set, pass `0`:
+
+    ```css
+    font-feature-settings: "ss03" 0;
+    ```
+  </Tab>
+  <Tab title="VS Code">
+    Use the `editor.fontLigatures` setting to pass OpenType feature strings:
+
+    ```json
+    "editor.fontFamily": "Iosevka",
+    "editor.fontLigatures": "'ss03' 1"
+    ```
+
+    You can combine a stylistic set with ligations:
+
+    ```json
+    "editor.fontLigatures": "'calt' 1, 'ss14' 1"
+    ```
+  </Tab>
+  <Tab title="CSS (font-variant-alternates)">
+    Modern CSS also supports stylistic sets through `font-variant-alternates`, though browser support varies:
+
+    ```css
+    code {
+      font-variant-alternates: stylistic(ss03);
+    }
+    ```
+
+    The `font-feature-settings` approach is more widely supported and is recommended for most use cases.
+  </Tab>
+</Tabs>
+
+## Using stylistic sets in custom builds
+
+In a custom build plan, you can set the stylistic set as the base for your character variants using the `inherits` key in the `variants` subsection:
+
+```toml
+[buildPlans.MyIosevka.variants]
+inherits = "ss14"  # JetBrains Mono Style
+```
+
+After inheriting a stylistic set, you can further override individual character shapes using `design`, `upright`, `italic`, and `oblique` keys. This lets you start from an established aesthetic and then adjust specific glyphs to your preference.
+
+<Warning>
+  Some applications limit the number of OpenType features they pass to the renderer. If you combine a stylistic set with many other features (such as character variants and ligatures), some features may be silently dropped. Test your configuration to confirm the intended features are active.
+</Warning>
+
+<Tip>
+  You can preview all stylistic sets interactively using the [Iosevka Customizer](https://be5invis.github.io/Iosevka/customizer). The customizer lets you compare sets side by side and export a complete build plan.
+</Tip>

@@ -1,0 +1,153 @@
+---
+title: 'Build Plans: The private-build-plans.toml System'
+description: 'Configure custom Iosevka builds via private-build-plans.toml. Covers family, spacing, serifs, noLigation, exportGlyphNames, and webfont format options.'
+---
+
+Build plans are TOML sections that each describe one custom Iosevka variant. You define them in a file called `private-build-plans.toml`, placed in the root of the repository alongside the existing `build-plans.toml`. The build system reads both files and selects the plan you name on the command line.
+
+## File location and structure
+
+Create `private-build-plans.toml` in the repository root if it does not already exist:
+
+```
+Iosevka/
+├── build-plans.toml             # Upstream plans — do not edit
+├── private-build-plans.toml     # Your custom plans go here
+├── package.json
+└── ...
+```
+
+Every plan is a TOML table keyed by `[buildPlans.<PlanName>]`. PascalCase names are recommended:
+
+```toml
+[buildPlans.IosevkaCustom]
+family = "Iosevka Custom"
+spacing = "normal"
+serifs = "sans"
+exportGlyphNames = false
+
+webfontFormats = ['ttf', 'woff2']
+```
+
+<Tip>
+  You can also generate a valid plan interactively using the [Iosevka Customizer](https://be5invis.github.io/Iosevka/customizer), then paste the output into your `private-build-plans.toml`.
+</Tip>
+
+## Top-level properties
+
+<AccordionGroup>
+  <Accordion title="family — required, string">
+    Sets the family name that appears in font menus and in the CSS `font-family` property.
+
+    ```toml
+    family = "Iosevka Custom"
+    ```
+  </Accordion>
+
+  <Accordion title="spacing — optional, string">
+    Controls the spacing mode. When omitted the font uses `normal` monospace spacing.
+
+    | Value | Behavior |
+    |-------|----------|
+    | `normal` | Standard monospace font |
+    | `quasi-proportional` | Characters take proportional widths |
+    | `quasi-proportional-extension-only` | Wide characters (like `M`) expand, but narrow characters (like `i`) do not shrink |
+    | `term` | Arrows and geometric symbols narrowed for terminal emulators |
+    | `fontconfig-mono` | All `term` changes plus complete removal of wide glyphs for FontConfig mono compatibility; the `NWID`/`WWID` features are also removed |
+    | `fixed` | All `fontconfig-mono` changes plus ligations are removed |
+    | `wide-mosaic` | Normal spacing but all box-drawing and block-element characters are rendered wide |
+
+    ```toml
+    spacing = "term"
+    ```
+
+    <Note>
+      The `fontconfig-mono` value removes a set of wide Unicode characters (including `U+27DD`–`U+27FF`, `U+2B33`, and several in the `U+1F8D0` range) to ensure every non-combining glyph is the same width.
+    </Note>
+  </Accordion>
+
+  <Accordion title="serifs — optional, string">
+    When set to `slab`, the font is built in slab-serif style. Omitting this property produces a sans-serif font (the default). The only meaningful value is `slab`; any other value is treated as sans-serif.
+
+    ```toml
+    serifs = "slab"
+    ```
+  </Accordion>
+
+  <Accordion title="noCvSs — optional, boolean">
+    When `true`, the `cv##` and `ss##` OpenType features are omitted from the built font. Use this to lock all variant choices at build time and reduce the final file size.
+
+    ```toml
+    noCvSs = true
+    ```
+  </Accordion>
+
+  <Accordion title="noLigation — optional, boolean">
+    When `true`, ligations are completely disabled regardless of what the `ligations` subsection specifies.
+
+    ```toml
+    noLigation = true
+    ```
+  </Accordion>
+
+  <Accordion title="exportGlyphNames — optional, boolean">
+    When `true`, glyph names are embedded in the font file. This increases file size but is required for ligature support in [Kitty](https://sw.kovidgoyal.net/kitty/).
+
+    ```toml
+    exportGlyphNames = true
+    ```
+  </Accordion>
+
+  <Accordion title="webfontFormats — optional, array of strings">
+    Controls which binary formats are referenced inside the webfont CSS. Valid elements are `'TTF'` and `'WOFF2'`. You can include one or both.
+
+    ```toml
+    webfontFormats = ['ttf', 'woff2']
+    ```
+  </Accordion>
+
+  <Accordion title="buildTextureFeature — optional, boolean">
+    When `true`, builds the `TXTR` OpenType feature for cross-letter texture adjustments. Defaults to `false`.
+
+    ```toml
+    buildTextureFeature = true
+    ```
+  </Accordion>
+</AccordionGroup>
+
+## Optional subsections
+
+A plan can include any combination of the following subsections:
+
+| Subsection | Purpose |
+|------------|---------|
+| [`variants`](/custom-build/configuring-variants) | Choose glyph shapes per character and per slope |
+| [`ligations`](/custom-build/configuring-ligations) | Configure the ligation set assigned to `calt` |
+| [`weights`](/custom-build/advanced-options#weights) | Define which weight grades are built |
+| [`widths`](/custom-build/advanced-options#widths) | Define which width grades are built |
+| [`slopes`](/custom-build/advanced-options#slopes) | Define which slopes are built |
+| [`metricOverride`](/custom-build/advanced-options#metric-override) | Override line height and Powerline scale/shift values |
+| [`excludeChars`](/custom-build/advanced-options#excluding-characters) | Exclude specific Unicode code point ranges from the font |
+| [`compatibilityLigatures`](/custom-build/configuring-ligations#compatibility-ligatures) | Add PUA-encoded ligatures for applications that do not support OpenType ligatures |
+
+## Minimal working example
+
+The smallest valid build plan needs only `family`. Every other property is optional:
+
+```toml
+[buildPlans.IosevkaCustom]      # IosevkaCustom is your plan name
+family = "Iosevka Custom"        # Font menu family name
+spacing = "normal"               # Optional; Values: `normal`, `term`, `fontconfig-mono`, or `fixed`
+# serifs = "slab"               # Uncomment to build slab-serif; omit for sans-serif (default)
+exportGlyphNames = false         # Set to true for ligature support in Kitty
+
+webfontFormats = ['ttf', 'woff2']
+```
+
+Build it with:
+
+```bash
+npm run build -- contents::IosevkaCustom
+```
+
+Output lands in the `dist/` directory.

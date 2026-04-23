@@ -1,0 +1,194 @@
+---
+title: "Character variants in Iosevka (cv01–cv99)"
+description: "Fine-tune glyph shapes in Iosevka using OpenType cv## feature tags. Assign a numeric index to select a letterform — for example cv36=11 for single-storey a."
+---
+
+Iosevka's character variant system lets you fine-tune the shape of specific characters without changing anything else. Each variant is exposed as an OpenType feature tag in the `cv##` range (`cv01` through `cv99`). You assign a numeric value to the tag to select a particular shape — for example, `cv36 = 11` selects a single-storey `a` with no serif at the terminal. The result is glyph-level control that you can apply directly in CSS, editor settings, or a custom build plan.
+
+Character variants are available in the **monospace subfamilies** only. The number of variants per character ranges from 2 to over 50 for some glyphs (zero alone has 54 variants).
+
+<Warning>
+  Some software limits the number of OpenType features it can process. If you specify many `cv##` tags simultaneously, some may be silently dropped. Validate your configuration in the editor or browser you intend to use.
+</Warning>
+
+## How to apply a character variant
+
+<Steps>
+  <Step title="Find the cv## tag for your character">
+    Each character or character group is assigned a specific `cv##` tag. Consult the table below or the [full variant list in the source repository](https://github.com/be5invis/Iosevka/blob/main/doc/character-variants.md) to find the tag and the index number for the shape you want.
+  </Step>
+  <Step title="Set the feature in CSS or your editor">
+    In CSS, pass the tag with the variant index as the value:
+
+    ```css
+    code, pre {
+      font-family: "Iosevka Web", monospace;
+      /* single-storey a (cv36 = 11), serifed i (cv44 = 5) */
+      font-feature-settings: "cv36" 11, "cv44" 5;
+    }
+    ```
+
+    In VS Code:
+
+    ```json
+    "editor.fontLigatures": "'cv36' 11, 'cv44' 5"
+    ```
+  </Step>
+  <Step title="Combine with ligatures and stylistic sets">
+    Character variant settings stack with other OpenType features. You can enable `calt` for ligatures, apply a stylistic set as a base, and then override specific glyphs with `cv##` tags:
+
+    ```css
+    font-feature-settings: "calt" 1, "ss14" 1, "cv36" 11;
+    ```
+  </Step>
+</Steps>
+
+## Digit form
+
+The `digit-form` selector controls whether digits are lining (all the same height, sitting on the baseline) or old-style (varying heights, some descending below the baseline). This is configured differently from regular `cv##` tags in a custom build plan but affects numeric readability significantly.
+
+| Variant name | Description |
+|---|---|
+| `lining` | All digits sit on the baseline at cap height (default) |
+| `old-style` | Digits have varying heights; some descend below the baseline |
+
+## Selected character variant reference
+
+The following tables show the variant options for key characters. Assign the index number shown to the corresponding `cv##` tag.
+
+### Digits
+
+<AccordionGroup>
+  <Accordion title="1 — cv01 (9 variants)">
+    | Index | Variant name | Description |
+    |-------|---|---|
+    | 1 | `line` | Drawn as a plain straight line |
+    | 2 | `no-base` | No bottom serif (default for Sans) |
+    | 3 | `base` | With bottom serif (default for Slab) |
+    | 4 | `no-base-long-top-serif` | No bottom serif, long top serif |
+    | 5 | `base-long-top-serif` | Bottom serif and long top serif |
+    | 6 | `no-base-flat-top-serif` | No bottom serif, flat top serif |
+    | 7 | `base-flat-top-serif` | Bottom serif and flat top serif |
+    | 8 | `no-base-top-cut` | No bottom serif, diagonal cut at top |
+    | 9 | `base-top-cut` | Bottom serif and diagonal cut at top |
+
+    ```css
+    font-feature-settings: "cv01" 3; /* 1 with bottom serif */
+    ```
+  </Accordion>
+  <Accordion title="0 — cv10 (54 variants, selection)">
+    | Index | Variant name | Description |
+    |-------|---|---|
+    | 1 | `unslashed` | Standard oval, no slash |
+    | 2 | `slashed` | Standard oval with diagonal slash (default) |
+    | 3 | `reverse-slashed` | Standard oval with reverse slash |
+    | 6 | `dotted` | Standard oval with center dot |
+    | 19 | `oval-unslashed` | Oval body, no slash |
+    | 20 | `oval-slashed` | Oval body with slash |
+
+    ```css
+    font-feature-settings: "cv10" 1; /* 0 without slash */
+    ```
+  </Accordion>
+</AccordionGroup>
+
+### Lowercase letters
+
+<AccordionGroup>
+  <Accordion title="a — cv36 (24 variants)">
+    | Index | Variant name | Description |
+    |-------|---|---|
+    | 1 | `double-storey-serifless` | Double-storey body, no terminal serif (default for Sans Upright) |
+    | 2 | `double-storey-serifed` | Double-storey body, serif at terminal (default for Slab Upright) |
+    | 3 | `double-storey-tailed` | Double-storey body, curly tail |
+    | 11 | `single-storey-serifless` | Single-storey body, no terminal serif |
+    | 12 | `single-storey-serifed` | Single-storey body, serif at terminal |
+    | 14 | `single-storey-tailed` | Single-storey body, curly tail (default for Italic) |
+
+    ```css
+    font-feature-settings: "cv36" 11; /* single-storey a, no serif */
+    ```
+  </Accordion>
+  <Accordion title="g — cv42 (12 variants)">
+    | Index | Variant name | Description |
+    |-------|---|---|
+    | 1 | `double-storey` | Double-storey shape |
+    | 2 | `double-storey-open` | Double-storey shape with open lower contour |
+    | 3 | `single-storey-serifless` | Single-storey shape (default for Sans) |
+    | 4 | `single-storey-serifed` | Single-storey shape with top-right serif (default for Slab Upright) |
+    | 5 | `single-storey-top-cut` | Single-storey shape, diagonal cut at top |
+    | 6 | `single-storey-earless-corner` | Single-storey, earless with cornered top-right |
+    | 7 | `single-storey-earless-rounded` | Single-storey, earless with rounded top-right |
+
+    ```css
+    font-feature-settings: "cv42" 1; /* double-storey g */
+    ```
+  </Accordion>
+  <Accordion title="i — cv44 (14 variants)">
+    | Index | Variant name | Description |
+    |-------|---|---|
+    | 1 | `serifless` | Plain straight line |
+    | 2 | `hooky` | With a hook at the top |
+    | 3 | `hooky-bottom` | Straight top, sharp-turning horizontal tail |
+    | 4 | `zshaped` | Z-shaped |
+    | 5 | `serifed` | Full serifs (default for Upright) |
+    | 6 | `serifed-asymmetric` | Shorter top serif, full bottom serif |
+    | 7 | `tailed` | Curly tail at bottom |
+    | 8 | `tailed-serifed` | Top serif and curly tail (default for Italic) |
+
+    ```css
+    font-feature-settings: "cv44" 1; /* serifless i */
+    ```
+  </Accordion>
+  <Accordion title="l — cv47 (14 variants)">
+    | Index | Variant name | Description |
+    |-------|---|---|
+    | 1 | `serifless` | Plain straight line |
+    | 2 | `hooky` | With a hook at the top |
+    | 3 | `hooky-bottom` | Straight top, sharp-turning horizontal tail |
+    | 4 | `zshaped` | Z-shaped |
+    | 5 | `serifed` | Full serifs (default for Upright) |
+    | 6 | `serifed-asymmetric` | Shorter top serif, full bottom serif |
+    | 7 | `tailed` | Curly tail at bottom |
+    | 8 | `tailed-serifed` | Top serif and curly tail (default for Italic) |
+    | 9 | `flat-tailed` | Curly-then-flat tail |
+
+    ```css
+    font-feature-settings: "cv47" 7; /* l with curly tail */
+    ```
+  </Accordion>
+</AccordionGroup>
+
+## Full variant list and visual customizer
+
+The complete list of character variants spans hundreds of entries across `cv01` through `cv99` and beyond. Rather than reading through the full list in text form, use the interactive Iosevka Customizer to explore variants visually:
+
+<Card title="Iosevka Customizer" icon="sliders" href="https://be5invis.github.io/Iosevka/customizer">
+  Browse all character variants visually, compare shapes side by side, and export a complete `private-build-plans.toml` or CSS `font-feature-settings` string.
+</Card>
+
+The customizer lets you select variants for every supported character and preview the result in a live sample before committing to a configuration. It also generates the corresponding `cv##` assignments for use directly in CSS or editor settings.
+
+## Using character variants in custom builds
+
+In a `private-build-plans.toml` build plan, character variant assignments go under the `variants` subsection using named keys rather than numeric `cv##` indexes:
+
+```toml
+[buildPlans.MyIosevka.variants.design]
+a = 'single-storey-serifless'
+g = 'double-storey'
+i = 'serifed'
+l = 'tailed'
+zero = 'slashed'
+one = 'no-base'
+```
+
+Slope-specific overrides use the `upright`, `italic`, and `oblique` subsections:
+
+```toml
+[buildPlans.MyIosevka.variants.italic]
+a = 'single-storey-tailed'
+i = 'tailed-serifed'
+```
+
+Assignments under `design` apply to all slopes, and slope-specific entries override them for the corresponding style.

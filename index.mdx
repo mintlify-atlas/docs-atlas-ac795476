@@ -1,97 +1,73 @@
 ---
-title: "Introduction"
-description: "Welcome to the new home for your documentation"
+title: "Iosevka: Versatile typeface for code, from code"
+description: "Iosevka is an open-source monospace typeface for code and terminals. Offers 248 language support, ligatures, stylistic sets, and a custom TOML build system."
 ---
 
-## Setting up
+Iosevka is an open-source, sans-serif + slab-serif, monospace + quasi-proportional typeface family designed for writing code, using in terminals, and preparing technical documents. With hundreds of stylistic variants, full OpenType ligature support, and a powerful custom build system, Iosevka adapts to your exact preferences.
 
-Get your documentation site up and running in minutes.
-
-<Card
-  title="Start here"
-  icon="rocket"
-  href="/quickstart"
-  horizontal
->
-  Follow our three step quickstart guide.
-</Card>
-
-## Make it yours
-
-Design a docs site that looks great and empowers your users.
-
-<Columns cols={2}>
-  <Card
-    title="Edit locally"
-    icon="pen-to-square"
-    href="/development"
-  >
-    Edit your docs locally and preview them in real time.
+<CardGroup cols={2}>
+  <Card title="Installation" icon="download" href="/installation">
+    Download prebuilt packages from GitHub Releases or install via your OS package manager in minutes.
   </Card>
-  <Card
-    title="Customize your site"
-    icon="palette"
-    href="/essentials/settings"
-  >
-    Customize the design and colors of your site to match your brand.
+  <Card title="Font Packages" icon="box" href="/packages">
+    Explore the full range of prebuilt Iosevka variants — monospace, slab-serif, curly, and proportional.
   </Card>
-    <Card
-    title="Set up navigation"
-    icon="map"
-    href="/essentials/navigation"
-  >
-    Organize your docs to help users find what they need and succeed with your product.
+  <Card title="OpenType Features" icon="sliders" href="/opentype/ligations">
+    Enable programming ligatures, switch stylistic sets, and cherry-pick per-character variants via OpenType.
   </Card>
-  <Card
-    title="API documentation"
-    icon="terminal"
-    href="/api-reference/introduction"
-  >
-    Auto-generate API documentation from OpenAPI specifications.
+  <Card title="Custom Build" icon="wrench" href="/custom-build/overview">
+    Build a personalized Iosevka variant from source with your own glyph shapes, ligations, and spacing.
   </Card>
-</Columns>
+</CardGroup>
 
-## Create beautiful pages
+## What makes Iosevka unique
 
-Everything you need to create world-class documentation.
+Iosevka ships with extensive built-in flexibility — no patching or modification required:
 
-<Columns cols={2}>
-  <Card
-    title="Write with MDX"
-    icon="pen-fancy"
-    href="/essentials/markdown"
-  >
-    Use MDX to style your docs pages.
-  </Card>
-  <Card
-    title="Code samples"
-    icon="code"
-    href="/essentials/code"
-  >
-    Add sample code to demonstrate how to use your product.
-  </Card>
-  <Card
-    title="Images"
-    icon="image"
-    href="/essentials/images"
-  >
-    Display images and other media.
-  </Card>
-  <Card
-    title="Reusable snippets"
-    icon="recycle"
-    href="/essentials/reusable-snippets"
-  >
-    Write once and reuse across your docs.
-  </Card>
-</Columns>
+- **6 monospace subfamilies** — sans-serif and slab-serif, each in Default, Term, and Fixed spacing
+- **2 quasi-proportional subfamilies** — Aile (sans-serif) and Etoile (slab-serif) for document use
+- **9 weights** from Thin to Heavy, 2 widths (Normal/Extended), 3 slopes (Upright, Italic, Oblique)
+- **18+ stylistic sets** (ss01–ss20) that instantly apply looks inspired by Consolas, Menlo, Fira Mono, JetBrains Mono, and more
+- **Hundreds of character variants** (cv01–cv99) for per-glyph customization via OpenType
+- **Rich ligation sets** for 18+ programming languages including JavaScript, Haskell, Elm, and F#
+- **248 supported languages** covering Latin, Greek, Cyrillic, IPA, and more
 
-## Need inspiration?
+## Get started
 
-<Card
-  title="See complete examples"
-  icon="stars"
-  href="https://mintlify.com/customers"
->
-  Browse our showcase of exceptional documentation sites.
-</Card>
+<Steps>
+  <Step title="Download Iosevka">
+    Visit the [GitHub Releases page](https://github.com/be5invis/Iosevka/releases) and download the package for your preferred variant. Super TTC packages bundle all weights and styles in a single file.
+  </Step>
+  <Step title="Install the font">
+    On **Windows**: drag font files into the Fonts settings panel. On **macOS**: double-click and click Install. On **Linux**: copy to `~/.local/share/fonts/` and run `fc-cache`.
+  </Step>
+  <Step title="Enable OpenType features">
+    In your editor or terminal, enable the `calt` feature for default ligatures. Use `cv##` and `ss##` feature tags to activate character variants and stylistic sets.
+  </Step>
+  <Step title="Build a custom variant (optional)">
+    Create a `private-build-plans.toml` file and run `npm run build -- contents::YourPlanName` to generate a fully personalized Iosevka font.
+  </Step>
+</Steps>
+
+## Explore the docs
+
+<CardGroup cols={3}>
+  <Card title="Font families" icon="font" href="/reference/font-families">
+    Overview of all official Iosevka variants and their characteristics.
+  </Card>
+  <Card title="Spacing variants" icon="arrows-left-right" href="/reference/spacing-variants">
+    Understand Default, Term, Fixed, and quasi-proportional spacing modes.
+  </Card>
+  <Card title="Ligations" icon="link" href="/opentype/ligations">
+    Programming ligatures via calt, dlig, and language-specific feature tags.
+  </Card>
+  <Card title="Stylistic sets" icon="palette" href="/opentype/stylistic-sets">
+    Apply full style presets from ss01 (Andale Mono) to ss20 (Curly).
+  </Card>
+  <Card title="Character variants" icon="a" href="/opentype/character-variants">
+    Fine-tune individual glyphs using cv## OpenType feature tags.
+  </Card>
+  <Card title="Docker build" icon="docker" href="/custom-build/docker">
+    Reproducible font builds using the official Iosevka Docker image.
+  </Card>
+</CardGroup>

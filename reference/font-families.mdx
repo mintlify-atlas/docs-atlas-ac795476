@@ -1,0 +1,115 @@
+---
+title: 'Iosevka font families: all prebuilt variants'
+description: 'A complete reference of every prebuilt Iosevka family — 6 monospace families, 2 quasi-proportional families, and 19 style-preset families (SS01–SS20).'
+---
+
+Iosevka ships a large number of prebuilt families so you can pick a look without building from source. There are three categories: the core monospace families (with and without slab serifs, and the curly variants), two quasi-proportional families for prose, and nineteen style-preset families (SS01–SS18 and SS20) that reproduce the feel of other well-known coding fonts.
+
+## Core monospace families
+
+Each of the four core monospace families is available in three spacing variants — Default, Term, and Fixed — giving twelve downloadable packages in total. All variants contain the same character set.
+
+<CardGroup cols={2}>
+  <Card title="Iosevka" icon="code">
+    The primary sans-serif monospace family. Default spacing with wide arrows and symbols enabled, full ligature support via the `calt` feature. The recommended starting point for most editors and terminals.
+  </Card>
+  <Card title="Iosevka Slab" icon="text">
+    Identical to Iosevka but with slab serifs on every glyph. Suited to users who prefer a more traditional, newspaper-like coding aesthetic while keeping strict monospace alignment.
+  </Card>
+  <Card title="Iosevka Curly" icon="curly-braces">
+    Applies the SS20 "Curly" style preset globally, giving bracket, brace, and punctuation characters a more rounded appearance. Available in Default, Term, and Fixed spacing variants.
+  </Card>
+  <Card title="Iosevka Curly Slab" icon="text">
+    Combines the curly character style with slab serifs. Each of the four families exists in Default, Term, and Fixed spacing — 12 sub-packages in total across the curly families.
+  </Card>
+</CardGroup>
+
+<Note>
+  When downloading, the package that contains all three spacing variants for a family is the recommended choice for desktop installation. Individual spacing packages (marked with `-SGr-` in the filename) let you cherry-pick just one variant.
+</Note>
+
+### Spacing sub-packages per family
+
+Each core monospace family contains three sub-packages:
+
+| Sub-package | Spacing | Ligatures | Typical use |
+|---|---|---|---|
+| `Iosevka` | Default | Yes | Editors, web, documents |
+| `Iosevka Term` | Terminal | Yes | Terminal emulators |
+| `Iosevka Fixed` | Fixed | No | Environments with strict monospace requirements |
+
+The same pattern applies to Iosevka Slab, Iosevka Curly, and Iosevka Curly Slab. See [Spacing variants](/reference/spacing-variants) for a full explanation of the differences.
+
+## Quasi-proportional families
+
+Iosevka also ships two families that use proportional (non-monospace) spacing. These are designed for prose, documentation, and technical writing rather than code editing. They include only one width (Normal) and do not support ligatures.
+
+<CardGroup cols={2}>
+  <Card title="Iosevka Aile" icon="align-left">
+    A quasi-proportional sans-serif family. "Aile" is the French word for wing. Character widths vary naturally, making it suitable for markdown documents, README files, and technical prose where readability at body size matters more than column alignment.
+  </Card>
+  <Card title="Iosevka Etoile" icon="star">
+    A quasi-proportional slab-serif family. "Étoile" is French for star. Shares the same design DNA as Iosevka Slab but with proportional spacing, making it a good match for formal documents or display text that should harmonize with Iosevka monospace in the same project.
+  </Card>
+</CardGroup>
+
+<Tip>
+  Aile and Etoile are ideal companions for Iosevka in mixed documents — use Iosevka (monospace) for code blocks and Aile or Etoile for body text.
+</Tip>
+
+## Style-preset families (SS01–SS20)
+
+The SS families are prebuilt versions of Iosevka with specific character variant sets applied globally, each approximating the look of a different well-known monospace font. They are available in the same Default, Term, and Fixed spacing variants as the core families. Note there is no SS19 — the numbering jumps from SS18 to SS20.
+
+<AccordionGroup>
+  <Accordion title="SS01–SS05: Classic coding fonts">
+    | Family | Style | Inspired by |
+    |---|---|---|
+    | Iosevka SS01 | Andale Mono Style | Andale Mono |
+    | Iosevka SS02 | Anonymous Pro Style | Anonymous Pro |
+    | Iosevka SS03 | Consolas Style | Consolas |
+    | Iosevka SS04 | Menlo Style | Menlo |
+    | Iosevka SS05 | Fira Mono Style | Fira Mono |
+  </Accordion>
+  <Accordion title="SS06–SS10: More coding fonts">
+    | Family | Style | Inspired by |
+    |---|---|---|
+    | Iosevka SS06 | Liberation Mono Style | Liberation Mono |
+    | Iosevka SS07 | Monaco Style | Monaco |
+    | Iosevka SS08 | Pragmata Pro Style | Pragmata Pro |
+    | Iosevka SS09 | Source Code Pro Style | Source Code Pro |
+    | Iosevka SS10 | Envy Code R Style | Envy Code R |
+  </Accordion>
+  <Accordion title="SS11–SS15: System and modern fonts">
+    | Family | Style | Inspired by |
+    |---|---|---|
+    | Iosevka SS11 | X Window Style | X Window fixed font |
+    | Iosevka SS12 | Ubuntu Mono Style | Ubuntu Mono |
+    | Iosevka SS13 | Lucida Style | Lucida Console |
+    | Iosevka SS14 | JetBrains Mono Style | JetBrains Mono |
+    | Iosevka SS15 | IBM Plex Mono Style | IBM Plex Mono |
+  </Accordion>
+  <Accordion title="SS16–SS20: Additional presets">
+    | Family | Style | Inspired by |
+    |---|---|---|
+    | Iosevka SS16 | PT Mono Style | PT Mono |
+    | Iosevka SS17 | Recursive Mono Style | Recursive Mono |
+    | Iosevka SS18 | Input Mono Style | Input Mono |
+    | Iosevka SS20 | Curly Style | Iosevka Curly (the base for the Curly families) |
+  </Accordion>
+</AccordionGroup>
+
+<Note>
+  The SS families have `noCvSs` set in their build plans, meaning the character variant OpenType features (`cvXX`) and secondary stylistic set features are disabled. The character shapes are baked in. If you need to further customize individual glyphs, build a custom Iosevka variant instead.
+</Note>
+
+## Packaging formats
+
+Each family is available in four packaging formats:
+
+| Format | Contents | Best for |
+|---|---|---|
+| Super TTC | 1 `.ttc` file | Desktop installation (recommended) |
+| TTC | 9 `.ttc` files, one per weight | Desktop when Super TTC has compatibility issues |
+| TTF | 54 `.ttf` files | Embedding in apps; available in hinted and unhinted versions |
+| WebFont | 1 `.css` + 54 `.woff2` + 54 `.ttf` | Web use; available in hinted and unhinted versions |

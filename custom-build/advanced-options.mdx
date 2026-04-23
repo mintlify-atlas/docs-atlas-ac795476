@@ -1,0 +1,176 @@
+---
+title: 'Advanced Build Options: Weights, Slopes, Widths, and Metrics'
+description: 'Control which weight, slope, and width grades are built, override line height and Powerline metrics, and exclude specific Unicode code point ranges.'
+---
+
+Beyond glyph shapes and ligations, a build plan can precisely control the weight grades, slope grades, and width grades that get built. You can also override key font metrics and restrict the character set. This page covers the `weights`, `slopes`, `widths`, `metricOverride`, and `excludeChars` subsections.
+
+## Weights
+
+When the `weights` subsection is absent, all standard weight grades are built with their default values. Define this subsection only when you need a subset of weights or custom numeric values.
+
+<Warning>
+  When you define the `weights` subsection, **all weights you want must be listed**. Any weight not present in the subsection will not be built.
+</Warning>
+
+Each weight is a TOML table under `[buildPlans.<PlanName>.weights.<WeightName>]` with three numeric properties:
+
+| Property | Valid range | Description |
+|----------|------------|-------------|
+| `shape` | 100–900 (inclusive) | Weight value used for glyph shape selection |
+| `menu` | 0–1000 | Weight value used in the font's name table |
+| `css` | 0–1000 | Weight value used for webfont CSS |
+
+```toml
+[buildPlans.IosevkaCustom.weights.Regular]
+shape = 400  # Weight for glyph shapes.
+menu  = 400  # Weight for the font's names.
+css   = 400  # Weight for webfont CSS.
+
+[buildPlans.IosevkaCustom.weights.Book]
+shape = 450
+menu  = 450  # Use 450 here to name the font's weight "Book"
+css   = 450
+
+[buildPlans.IosevkaCustom.weights.Bold]
+shape = 700
+menu  = 700
+css   = 700
+```
+
+<Note>
+  The `shape` property drives which master design is interpolated. The `menu` and `css` properties are purely for naming — they let you expose the same shape weight under a different name (for example, naming `shape = 450` as "Book").
+</Note>
+
+## Slopes
+
+When the `slopes` subsection is absent, all three slopes (Upright, Oblique, Italic) are built. Define this subsection only when you want a subset, or need to adjust angles or CSS names.
+
+Each slope is a TOML table under `[buildPlans.<PlanName>.slopes.<SlopeName>]`:
+
+| Property | Valid values | Description |
+|----------|-------------|-------------|
+| `angle` | 0–15 degrees | Slant angle in degrees |
+| `shape` | `upright` \| `oblique` \| `italic` | Slope grade used for shape selection |
+| `menu` | `upright` \| `oblique` \| `italic` | Slope grade used in the font's name table |
+| `css` | `normal` \| `oblique` \| `italic` | Slope grade used for webfont CSS |
+
+```toml
+[buildPlans.IosevkaCustom.slopes.Upright]
+angle = 0             # Angle in degrees. Valid range [0, 15]
+shape = "upright"     # Slope grade used for shape selection.  `upright` | `oblique` | `italic`
+menu  = "upright"     # Slope grade used for naming.           `upright` | `oblique` | `italic`
+css   = "normal"      # Slope grade used for webfont CSS.      `normal`  | `oblique` | `italic`
+
+[buildPlans.IosevkaCustom.slopes.Oblique]
+angle = 9.4
+shape = "oblique"
+menu  = "oblique"
+css   = "oblique"
+
+[buildPlans.IosevkaCustom.slopes.Italic]
+angle = 9.4
+shape = "italic"
+menu  = "italic"
+css   = "italic"
+```
+
+## Widths
+
+When the `widths` subsection is absent, all standard width grades are built with their default values. As with weights, defining this subsection means you must list every width you want built.
+
+<Warning>
+  When you define the `widths` subsection, **all widths you want must be listed**. Any width not present in the subsection will not be built.
+</Warning>
+
+Each width is a TOML table under `[buildPlans.<PlanName>.widths.<WidthName>]`:
+
+| Property | Valid range | Description |
+|----------|------------|-------------|
+| `shape` | 434–664 (inclusive) | Unit width in 1/1000 em. Glyph widths are equal to or a simple multiple of this value |
+| `menu` | 1–9 (integers) | Width grade used in the font's name table |
+| `css` | CSS `font-stretch` string | Value for the webfont CSS `font-stretch` property |
+
+```toml
+[buildPlans.IosevkaCustom.widths.Normal]
+shape = 500        # Unit Width, measured in 1/1000 em.
+menu  = 5          # Width grade for the font's names.
+css   = "normal"   # "font-stretch" property of webfont CSS.
+
+[buildPlans.IosevkaCustom.widths.Extended]
+shape = 600
+menu  = 7
+css   = "expanded"
+```
+
+## Metric override
+
+The `metricOverride` subsection lets you adjust several vertical and Powerline-related font metrics. Remove the subsection entirely when you do not need any overrides.
+
+```toml
+[buildPlans.IosevkaCustom.metricOverride]
+leading = 1250
+winMetricAscenderPad = 0
+winMetricDescenderPad = 0
+powerlineScaleY = 1
+powerlineScaleX = 1
+powerlineShiftY = 0
+powerlineShiftX = 0
+```
+
+<AccordionGroup>
+  <Accordion title="leading">
+    Controls the line height (leading) of the font in font units. Increasing this value adds space between lines. The default Iosevka value is `1250`.
+
+    ```toml
+    leading = 1500
+    ```
+  </Accordion>
+  <Accordion title="winMetricAscenderPad and winMetricDescenderPad">
+    Padding added to the Windows OS/2 ascender and descender metrics, measured in font units. These values affect how Windows and some cross-platform applications calculate line spacing.
+
+    ```toml
+    winMetricAscenderPad = 0
+    winMetricDescenderPad = 0
+    ```
+  </Accordion>
+  <Accordion title="powerlineScaleY and powerlineScaleX">
+    Scale factors applied to Powerline glyphs vertically (`Y`) and horizontally (`X`). A value of `1` leaves the glyphs at their default size.
+
+    ```toml
+    powerlineScaleY = 1
+    powerlineScaleX = 1
+    ```
+  </Accordion>
+  <Accordion title="powerlineShiftY and powerlineShiftX">
+    Vertical (`Y`) and horizontal (`X`) shift applied to Powerline glyphs in font units. Use these to align Powerline symbols with adjacent text in your terminal.
+
+    ```toml
+    powerlineShiftY = 0
+    powerlineShiftX = 0
+    ```
+  </Accordion>
+</AccordionGroup>
+
+## Excluding characters
+
+The `excludeChars` subsection removes specific Unicode code points or ranges from the built font. This is useful for reducing file size when you know certain characters will never be used.
+
+Remove the section entirely when character exclusion is not needed.
+
+```toml
+[buildPlans.IosevkaCustom.excludeChars]
+ranges = [[10003, 10008]]
+```
+
+The `ranges` property is an array of `[start, end]` pairs, where both values are Unicode code points in decimal. The example above excludes `U+2713` (CHECK MARK) through `U+2718` (HEAVY BALLOT X).
+
+You can specify multiple ranges:
+
+```toml
+[buildPlans.IosevkaCustom.excludeChars]
+ranges = [
+  [10003, 10008],   # U+2713–U+2718: check marks and ballot boxes
+  [128512, 128591]  # U+1F600–U+1F64F: emoticons block
+]
+```

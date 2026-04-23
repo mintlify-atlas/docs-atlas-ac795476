@@ -1,0 +1,113 @@
+---
+title: 'Spacing variants: Default, Term, and Fixed'
+description: 'Explains the three Iosevka spacing modes — Default, Term, and Fixed — and when to use each, plus fontconfig-mono for Linux and quasi-proportional for prose.'
+---
+
+Every core Iosevka monospace family ships in three spacing variants. The variant you choose determines whether wide (2-column) symbols appear, and whether ligatures are supported. Choosing the right spacing variant for your environment prevents layout glitches in terminals and editors that enforce strict character-cell grids.
+
+## The three monospace spacing modes
+
+<Tabs>
+  <Tab title="Default">
+    **Default spacing** is the standard mode for editors, IDEs, and document rendering.
+
+    - Certain symbols — arrows (`→`, `⇒`, `←`), geometric shapes, and wide Unicode characters — are rendered as **2-column (wide) glyphs**. They occupy two character cells.
+    - **Ligatures are enabled** via the `calt` OpenType feature by default, and discretionary ligatures are available via `dlig`.
+    - Best for: VS Code, Neovim, Emacs, JetBrains IDEs, web browsers, and any environment that handles wide glyphs correctly.
+
+    ```text
+    Font family name:  Iosevka
+                       Iosevka Slab
+                       Iosevka Curly
+                       Iosevka Curly Slab
+                       Iosevka SS01 … SS20
+    ```
+
+    <Tip>
+      If you use Iosevka in a terminal and wide symbols appear misaligned, switch to the Term variant instead.
+    </Tip>
+  </Tab>
+  <Tab title="Term">
+    **Term spacing** (Terminal spacing) narrows wide symbols to fit within a single character cell.
+
+    - Arrows, geometric symbols, and other previously wide glyphs are now **narrow (1-column)**, matching the character cell width. This prevents double-wide rendering in terminal emulators.
+    - **Ligatures remain enabled** — you still get code ligatures in terminal editors like Neovim if your terminal supports them.
+    - Best for: most terminal emulators (Alacritty, kitty, iTerm2, Windows Terminal, GNOME Terminal) where 2-column symbols would shift layout.
+
+    ```text
+    Font family name:  Iosevka Term
+                       Iosevka Term Slab
+                       Iosevka Term Curly
+                       Iosevka Term Curly Slab
+                       Iosevka Term SS01 … SS20
+    ```
+  </Tab>
+  <Tab title="Fixed">
+    **Fixed spacing** is the most restrictive mode, designed for environments that cannot handle ligatures or wide glyphs.
+
+    - All glyphs are **strictly 1-column**. No glyph ever overflows its cell.
+    - **Ligatures are disabled**. Multi-character sequences like `!=` or `->` render as individual characters with no substitution.
+    - Best for: environments that misdetect Iosevka or Iosevka Term as proportional, legacy terminal applications, Java-based IDEs with font rendering quirks, and any tooling that breaks on ligature substitution.
+
+    ```text
+    Font family name:  Iosevka Fixed
+                       Iosevka Fixed Slab
+                       Iosevka Fixed Curly
+                       Iosevka Fixed Curly Slab
+                       Iosevka Fixed SS01 … SS20
+    ```
+
+    <Note>
+      Fixed is an intentional compatibility fallback. If Default or Term works in your environment, prefer those — you get a richer glyph experience.
+    </Note>
+  </Tab>
+</Tabs>
+
+## Comparison at a glance
+
+| | Default | Term | Fixed |
+|---|---|---|---|
+| Wide (2-col) arrows and symbols | Yes | No — narrowed | No — narrowed |
+| Ligatures (`calt`) | Yes | Yes | No |
+| Discretionary ligatures (`dlig`) | Yes | Yes | No |
+| Strict 1-column guarantee | No | No | Yes |
+
+## Fontconfig-mono mode
+
+On Linux systems using Fontconfig, there is a fourth spacing mode available when building a custom Iosevka variant: `fontconfig-mono`. This mode is similar to Term in that wide glyphs are narrowed, but it also adjusts the font's internal metrics and `PANOSE` values to signal to Fontconfig that the font is strictly monospaced. This avoids situations where Fontconfig falls back to a different font because it classifies Iosevka as proportional.
+
+<Note>
+  The `fontconfig-mono` spacing is not available in prebuilt packages — it is only accessible via a custom build. See the building from source documentation for details.
+</Note>
+
+## Quasi-proportional mode
+
+The Iosevka Aile and Iosevka Etoile families use a different mode entirely: **quasi-proportional** spacing. In this mode, character widths vary naturally based on glyph geometry rather than fitting a fixed cell. These families are not suitable as code fonts; they are designed for prose, documentation, and mixed-use documents.
+
+Key differences from monospace variants:
+
+- No fixed cell width — each character has its own advance width.
+- Only one width (Normal) is available; the Extended width is not offered.
+- Ligatures are not supported.
+
+See [Font families](/reference/font-families) for more information about Aile and Etoile.
+
+## When to use each variant
+
+<AccordionGroup>
+  <Accordion title="I'm using VS Code, Neovim GUI, or a JetBrains IDE">
+    Use **Default** spacing (`Iosevka`). These editors handle wide glyphs correctly and render ligatures through their own OpenType pipeline.
+  </Accordion>
+  <Accordion title="I'm using a terminal emulator (Alacritty, kitty, iTerm2, etc.)">
+    Use **Term** spacing (`Iosevka Term`). Terminal emulators enforce a fixed character-cell grid. The Term variant narrows wide symbols to prevent them from overflowing into the next cell.
+  </Accordion>
+  <Accordion title="My terminal or editor breaks on ligatures">
+    Use **Fixed** spacing (`Iosevka Fixed`). This disables all ligature substitution and guarantees every glyph occupies exactly one cell.
+  </Accordion>
+  <Accordion title="Iosevka is detected as a proportional font by my application">
+    Try **Fixed** spacing first. If you are on Linux and building from source, consider the `fontconfig-mono` spacing option, which explicitly marks the font as monospaced in its metadata.
+  </Accordion>
+  <Accordion title="I need a font for prose or documentation">
+    Use **Iosevka Aile** (sans-serif) or **Iosevka Etoile** (slab-serif). These quasi-proportional families are optimized for reading text rather than aligning code columns.
+  </Accordion>
+</AccordionGroup>

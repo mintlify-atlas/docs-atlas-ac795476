@@ -1,0 +1,82 @@
+{
+  "projectType": "general",
+  "projectName": "Iosevka",
+  "projectDescription": "An open-source, highly customizable monospace and quasi-proportional typeface family designed for coding, terminals, and technical documents.",
+  "theme": "willow",
+  "primaryColor": "#a29991",
+  "lightColor": "#382921",
+  "darkColor": "#d6d1cd",
+  "navigation": {
+    "tabs": [
+      {
+        "tab": "Documentation",
+        "groups": [
+          {
+            "group": "Get Started",
+            "pages": [
+              "introduction",
+              "installation",
+              "packages"
+            ]
+          },
+          {
+            "group": "OpenType Features",
+            "pages": [
+              "opentype/ligations",
+              "opentype/stylistic-sets",
+              "opentype/character-variants"
+            ]
+          },
+          {
+            "group": "Custom Build",
+            "pages": [
+              "custom-build/overview",
+              "custom-build/build-plans",
+              "custom-build/configuring-variants",
+              "custom-build/configuring-ligations",
+              "custom-build/advanced-options",
+              "custom-build/docker"
+            ]
+          },
+          {
+            "group": "Reference",
+            "pages": [
+              "reference/font-families",
+              "reference/spacing-variants",
+              "reference/weights-widths-slopes",
+              "reference/language-support"
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  "keyFeatures": [
+    "6 monospace subfamilies (sans-serif and slab-serif) with 3 spacing variants each (Default, Term, Fixed)",
+    "2 quasi-proportional subfamilies: Aile (sans-serif) and Etoile (slab-serif)",
+    "9 weights (Thin to Heavy), 2 widths (Normal and Extended), 3 slopes (Upright, Italic, Oblique)",
+    "Extensive OpenType ligations via calt, dlig, and language-specific features",
+    "18+ stylistic sets (ss01–ss20) mimicking popular fonts like Consolas, Menlo, Fira Mono",
+    "Hundreds of character variants (cv01–cv99) for per-glyph customization",
+    "Custom build system via TOML build plans (private-build-plans.toml)",
+    "248 supported languages including Latin, Greek, Cyrillic, IPA",
+    "Available as TTF, TTC, Super TTC, and WebFont (WOFF2) packages",
+    "Docker-based build support for reproducible font generation"
+  ],
+  "publicApiSurface": [
+    "buildPlans.<name>.family — Font family name",
+    "buildPlans.<name>.spacing — normal | term | fontconfig-mono | fixed | quasi-proportional",
+    "buildPlans.<name>.serifs — sans | slab",
+    "buildPlans.<name>.variants.inherits — ss01..ss20 stylistic set inheritance",
+    "buildPlans.<name>.variants.design — per-character variant assignments (cv##)",
+    "buildPlans.<name>.ligations.inherits — predefined ligation set (default-calt, javascript, haskell, etc.)",
+    "buildPlans.<name>.ligations.enables / disables — cherry-pick ligation groups",
+    "buildPlans.<name>.weights — custom weight definitions (shape/menu/css)",
+    "buildPlans.<name>.slopes — custom slope definitions (Upright/Italic/Oblique)",
+    "buildPlans.<name>.widths — custom width definitions",
+    "buildPlans.<name>.metricOverride — override leading, powerline scaling, etc.",
+    "npm run build -- contents::<plan> — build full font package",
+    "npm run build -- ttf::<plan> — build TTF only",
+    "npm run build -- webfont::<plan> — build web fonts only"
+  ]
+}
